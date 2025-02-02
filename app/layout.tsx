@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import SideBar from "@/components/sidebar";
+import HeadBar from "@/components/HeadBar";
 import "./globals.css";
 
 const bakh = localFont({
@@ -46,7 +47,10 @@ export default function RootLayout({
           <div className="w-1/6">
             <SideBar />
           </div>
-          <div className="w-5/6 px-5 py-3 space-y-4 bg-white dark:bg-black">{children}</div>
+          <div className="w-5/6 px-5 py-3 space-y-4 bg-white dark:bg-black">
+            <HeadBar />
+            {children}
+          </div>
         </div>
       </body>
     </html>

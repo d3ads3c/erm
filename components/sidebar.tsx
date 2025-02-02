@@ -49,39 +49,38 @@ export default function SideBar() {
                 <p className="text-white">داشبورد</p>
               </Link>
             </li>
+
             <li>
-              <li>
-                <Collapsible>
-                  <CollapsibleTrigger className="w-full">
-                    <div className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100">
-                      <div className="size-10 flex items-center justify-center rounded-xl bg-gray-100">
-                        <i className="fi fi-sr-building mt-2 text-red-500"></i>
-                      </div>
-                      <p>سازمان</p>
+              <Collapsible>
+                <CollapsibleTrigger className="w-full">
+                  <div className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100">
+                    <div className="size-10 flex items-center justify-center rounded-xl bg-gray-100">
+                      <i className="fi fi-sr-building mt-2 text-red-500"></i>
                     </div>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className=" border-r p-2.5 mt-2 mr-5">
-                    <Link
-                      href={"#"}
-                      className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
-                    >
-                      <p>مرخصی</p>
-                    </Link>
-                    <Link
-                      href={"#"}
-                      className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
-                    >
-                      <p>مساعده</p>
-                    </Link>
-                    <Link
-                      href={"#"}
-                      className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
-                    >
-                      <p>مکاتبات</p>
-                    </Link>
-                  </CollapsibleContent>
-                </Collapsible>
-              </li>
+                    <p>سازمان</p>
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent className=" border-r p-2.5 mt-2 mr-5">
+                  <Link
+                    href={"/vacation"}
+                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
+                  >
+                    <p>مرخصی</p>
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
+                  >
+                    <p>مساعده</p>
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
+                  >
+                    <p>مکاتبات</p>
+                  </Link>
+                </CollapsibleContent>
+              </Collapsible>
             </li>
             <li>
               <Collapsible>
@@ -93,18 +92,50 @@ export default function SideBar() {
                     <p>منابع انسانی</p>
                   </div>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="pr-6 bg-red-50 rounded-xl p-2.5 mt-1">
+                <CollapsibleContent className="border-r p-2.5 mt-2 mr-5">
                   <Link
                     href={"#"}
-                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-white"
+                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
                   >
                     <p>پرسنل</p>
                   </Link>
                   <Link
                     href={"#"}
-                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-white"
+                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
                   >
                     <p>فرم ها</p>
+                  </Link>
+                </CollapsibleContent>
+              </Collapsible>
+            </li>
+            <li>
+              <Collapsible>
+                <CollapsibleTrigger className="w-full">
+                  <div className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100">
+                    <div className="size-10 flex items-center justify-center rounded-xl bg-gray-100">
+                      <i className="fi fi-sr-world mt-2 text-red-500"></i>
+                    </div>
+                    <p>بازرگانی</p>
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="border-r p-2.5 mt-2 mr-5">
+                  <Link
+                    href={"#"}
+                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
+                  >
+                    <p>تامین کنندگان</p>
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
+                  >
+                    <p>کالاها</p>
+                  </Link>
+                  <Link
+                    href={"#"}
+                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
+                  >
+                    <p>پرونده ها</p>
                   </Link>
                 </CollapsibleContent>
               </Collapsible>

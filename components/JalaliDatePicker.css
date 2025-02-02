@@ -1,0 +1,68 @@
+.jalali-date-picker {
+    position: relative;
+    /* width: 350px; */
+}
+
+
+.calendar {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    z-index: 10;
+    padding: 10px;
+}
+
+.selectors {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.selectors select {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.days-of-week {
+    display: flex;
+    justify-content: space-between;
+    background: #f0f0f0;
+    padding: 8px 0;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+}
+
+.day-of-week {
+    width: 14.28%;
+    text-align: center;
+}
+
+.days {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.day, .empty-day {
+    width: 14.28%;
+    text-align: center;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.day:hover {
+    background-color: #f0f0f0;
+}
+
+.day.selected {
+    background-color: #c70d0d;
+    color: white;
+    border-radius: 50%;
+}
