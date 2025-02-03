@@ -6,8 +6,12 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { usePathname } from "next/navigation";
 
 export default function SideBar() {
+  const pathname = usePathname();
+  const Office = ["vacation", "imprest", "chats"];
+  const hr = ["personnel", "forms"];
   return (
     <div className="h-screen w-full border-l">
       <div className="h-[10%] w-full p-3">
@@ -34,48 +38,98 @@ export default function SideBar() {
           </div>
         </div>
       </div>
-      <div className="h-[80%] w-full p-5">
+      <div className="max-h-[80%] w-full p-5">
         <h3 className="text-gray-500 text-sm">منو</h3>
-        <div className="min-h-full overflow-auto w-full mt-3">
+        <div className="max-h-[600px] h-[600px] w-full mt-3 overflow-auto">
           <ul className="space-y-3">
             <li>
               <Link
-                href={"#"}
-                className="flex items-center gap-2 bg-red-500 p-2 rounded-xl text-gray-500"
+                href={"/dashboard"}
+                className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                  pathname.includes("/dashboard") ? "bg-red-500" : ""
+                }`}
               >
-                <div className="size-10 flex items-center justify-center rounded-xl bg-red-100">
+                <div
+                  className={`size-10 flex items-center justify-center rounded-xl ${
+                    pathname.includes("/dashboard")
+                      ? "bg-red-100"
+                      : "bg-gray-100"
+                  }`}
+                >
                   <i className="fi fi-sr-dashboard-panel mt-2 text-red-500"></i>
                 </div>
-                <p className="text-white">داشبورد</p>
+                <p
+                  className={`${
+                    pathname.includes("/dashboard")
+                      ? "text-white"
+                      : "text-gray-500"
+                  }
+                  `}
+                >
+                  داشبورد
+                </p>
               </Link>
             </li>
 
             <li>
               <Collapsible>
                 <CollapsibleTrigger className="w-full">
-                  <div className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100">
-                    <div className="size-10 flex items-center justify-center rounded-xl bg-gray-100">
+                  <div
+                    className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                      Office.some((element) => pathname.includes(element))
+                        ? "bg-red-500"
+                        : "hover:bg-gray-100"
+                    }`}
+                  >
+                    <div
+                      className={`size-10 flex items-center justify-center rounded-xl ${
+                        Office.some((element) => pathname.includes(element))
+                          ? "bg-red-100"
+                          : "bg-gray-100"
+                      }`}
+                    >
                       <i className="fi fi-sr-building mt-2 text-red-500"></i>
                     </div>
-                    <p>سازمان</p>
+                    <p
+                      className={`${
+                        Office.some((element) => pathname.includes(element))
+                          ? "text-white"
+                          : "text-gray-500"
+                      }
+                  `}
+                    >
+                      سازمان
+                    </p>
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent className=" border-r p-2.5 mt-2 mr-5">
                   <Link
                     href={"/vacation"}
-                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
+                    className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                      pathname.includes("/vacation")
+                        ? "bg-red-100 text-red-500"
+                        : "hover:bg-gray-100"
+                    }`}
                   >
                     <p>مرخصی</p>
                   </Link>
                   <Link
-                    href={"#"}
-                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
+                    href={"/imprest"}
+                    className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                      pathname.includes("/imprest")
+                        ? "bg-red-100 text-red-500"
+                        : "hover:bg-gray-100"
+                    }`}
                   >
                     <p>مساعده</p>
                   </Link>
                   <Link
                     href={"#"}
-                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
+                    className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                      pathname.includes("/chat")
+                        ? "bg-red-100 text-red-500"
+                        : "hover:bg-gray-100"
+                    }`}
                   >
                     <p>مکاتبات</p>
                   </Link>
@@ -85,17 +139,42 @@ export default function SideBar() {
             <li>
               <Collapsible>
                 <CollapsibleTrigger className="w-full">
-                  <div className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100">
-                    <div className="size-10 flex items-center justify-center rounded-xl bg-gray-100">
+                  <div
+                    className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                      hr.some((element) => pathname.includes(element))
+                        ? "bg-red-500"
+                        : "hover:bg-gray-100"
+                    }`}
+                  >
+                    <div
+                      className={`size-10 flex items-center justify-center rounded-xl ${
+                        hr.some((element) => pathname.includes(element))
+                          ? "bg-red-100"
+                          : "bg-gray-100"
+                      }`}
+                    >
                       <i className="fi fi-sr-users-alt mt-2 text-red-500"></i>
                     </div>
-                    <p>منابع انسانی</p>
+                    <p
+                      className={`${
+                        hr.some((element) => pathname.includes(element))
+                          ? "text-white"
+                          : "text-gray-500"
+                      }
+                  `}
+                    >
+                      منابع انسانی
+                    </p>
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="border-r p-2.5 mt-2 mr-5">
-                  <Link
-                    href={"#"}
-                    className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
+                <Link
+                    href={"/personnel"}
+                    className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                      pathname.includes("/personnel")
+                        ? "bg-red-100 text-red-500"
+                        : "hover:bg-gray-100"
+                    }`}
                   >
                     <p>پرسنل</p>
                   </Link>

@@ -69,10 +69,8 @@ const SheetContent = React.forwardRef<
         <span className="sr-only">Close</span>
       </SheetPrimitive.Close>
       {children}
-      <SheetPrimitive.Close className="w-full">
-        <button type="button" className="text-red-500 text-center w-full mt-2">
+      <SheetPrimitive.Close className="text-red-500 text-center w-full mt-2 cursor-pointer">
           انصراف
-        </button>
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>
   </SheetPortal>

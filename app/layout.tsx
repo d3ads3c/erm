@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import SideBar from "@/components/sidebar";
-import HeadBar from "@/components/HeadBar";
 import "./globals.css";
 
 const bakh = localFont({
@@ -43,15 +41,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl" className="">
       <body className={`${bakh.className} antialiased`}>
-        <div className="flex">
-          <div className="w-1/6">
-            <SideBar />
-          </div>
-          <div className="w-5/6 px-5 py-3 space-y-4 bg-white dark:bg-black">
-            <HeadBar />
-            {children}
-          </div>
-        </div>
+        {children}
       </body>
     </html>
   );

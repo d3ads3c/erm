@@ -28,13 +28,8 @@ export default function VacationReq() {
       <div className="flex items-center justify-between">
         <h2>مرخصی های من</h2>
         <Sheet>
-          <SheetTrigger>
-            <button
-              type="button"
-              className="bg-emerald-400 text-white shadow-xl shadow-emerald-200 px-7 py-3 w-fit rounded-xl"
-            >
-              مرخصی جدید
-            </button>
+          <SheetTrigger className="bg-emerald-400 text-white shadow-xl shadow-emerald-200 px-7 py-3 w-fit rounded-xl">
+            مرخصی جدید
           </SheetTrigger>
           <SheetContent side={"left"} className="min-w-[500px]">
             <SheetHeader>
