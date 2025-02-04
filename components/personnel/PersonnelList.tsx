@@ -78,7 +78,7 @@ export default function PersonnelList() {
                   <DropdownMenuTrigger className="bg-gray-100 rounded-lg px-4 py-2 text-gray-500">
                     <p>گزینه ها</p>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-[200px] mr-10">
+                  <DropdownMenuContent className="w-[200px]">
                     <DropdownMenuLabel>نیما نیک عمل</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>پروفایل</DropdownMenuItem>
