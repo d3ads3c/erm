@@ -7,13 +7,29 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function SideBar() {
   const pathname = usePathname();
   const Office = ["vacation", "imprest", "chats"];
   const hr = ["personnel", "forms"];
+  const [UserName, setUserName] = useState<string>("");
+  const [UserTitle, setTitle] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const LocalData = localStorage.getItem("UserInfo");
+      if (LocalData) {
+        const userName = JSON.parse(LocalData);
+        setUserName(userName.Fname + " " + userName.Lname);
+        setTitle(userName.Title);
+      } else {
+        console.log("No user data found in localStorage");
+      }
+    }
+  }, []);
   return (
-    <div className="h-screen w-full border-l">
+    <div className="h-screen w-full border-l sticky top-0">
       <div className="h-[10%] w-full p-3">
         <div className="flex items-center p-3 border rounded-xl">
           <div className="w-4/5 flex items-center gap-2">
@@ -46,7 +62,7 @@ export default function SideBar() {
               <Link
                 href={"/dashboard"}
                 className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
-                  pathname.includes("/dashboard") ? "bg-red-500" : ""
+                  pathname.includes("/dashboard") ? "bg-red-500" : "hover:bg-gray-100"
                 }`}
               >
                 <div
@@ -168,7 +184,7 @@ export default function SideBar() {
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="border-r p-2.5 mt-2 mr-5">
-                <Link
+                  <Link
                     href={"/personnel"}
                     className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
                       pathname.includes("/personnel")
@@ -268,9 +284,9 @@ export default function SideBar() {
               ></Image>
             </div>
             <div>
-              <h2 className="text-sm">نیما نیک عمل</h2>
+              <h2 className="text-sm">{UserName}</h2>
               <div className="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-full">
-                <p>مدیر فناوری اطلاعات</p>
+                <p>{UserTitle}</p>
               </div>
             </div>
           </div>

@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
                 sameSite: "Strict",
             });
 
-            const response = NextResponse.json({ msg: "LoggedIn", UserName: data.FullName, Title: data.Title, Manager: data.Manager, Departman: data.Departman, Status: data.Status });
+            const response = NextResponse.json({ msg: "LoggedIn", Fname: data.Fname, Lname: data.Lname, Title: data.Title, Manager: data.Manager, Departman: data.Departman, Status: data.Status });
             response.headers.set("Set-Cookie", cookieHeader);
             return response;
         } else {
