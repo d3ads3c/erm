@@ -17,7 +17,7 @@ export default function HeadBar() {
   }, []);
 
   return (
-    <div className="w-full p-5 bg-white flex items-center border-b">
+    <div className="w-full py-5 bg-white flex items-center border-b">
       <div className="w-1/2">
         <h2>سلام {UserName}؛ خوش آمدی</h2>
         <p className="text-xs text-gray-400">شنبه 14 بهمن</p>

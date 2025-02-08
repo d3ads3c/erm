@@ -258,14 +258,31 @@ export default function SideBar() {
               </Link>
             </li>
             <li>
-              <Link
-                href={"#"}
-                className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100"
+            <Link
+                href={"/settings"}
+                className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                  pathname.includes("/settings") ? "bg-red-500" : "hover:bg-gray-100"
+                }`}
               >
-                <div className="size-10 flex items-center justify-center rounded-xl bg-gray-100">
+                <div
+                  className={`size-10 flex items-center justify-center rounded-xl ${
+                    pathname.includes("/settings")
+                      ? "bg-red-100"
+                      : "bg-gray-100"
+                  }`}
+                >
                   <i className="fi fi-sr-settings mt-2 text-red-500"></i>
                 </div>
-                <p>تنظیمات</p>
+                <p
+                  className={`${
+                    pathname.includes("/settings")
+                      ? "text-white"
+                      : "text-gray-500"
+                  }
+                  `}
+                >
+                  تنظیمات
+                </p>
               </Link>
             </li>
           </ul>

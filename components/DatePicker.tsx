@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import moment from "moment-jalaali";
+import { usePathname } from "next/navigation";
 
 moment.loadPersian({ dialect: "persian-modern", usePersianDigits: true });
 
@@ -20,7 +21,8 @@ const JalaliDatePicker: React.FC<JalaliDatePickerProps> = ({
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
   const timePickerRef = useRef<HTMLDivElement>(null);
-
+  const pathname = usePathname();
+  console.log(pathname)
   const years = Array.from({ length: 20 }, (_, i) => moment().jYear() - 5 + i); // 5 years before and 5 years after current year
   const months = [
     "فروردین",
@@ -80,7 +82,10 @@ const JalaliDatePicker: React.FC<JalaliDatePickerProps> = ({
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (timePickerRef.current && !timePickerRef.current.contains(event.target as Node)) {
+    if (
+      timePickerRef.current &&
+      !timePickerRef.current.contains(event.target as Node)
+    ) {
       setIsTimePickerOpen(false);
     }
   };
@@ -168,15 +173,21 @@ const JalaliDatePicker: React.FC<JalaliDatePickerProps> = ({
           <div className="days grid grid-cols-7 gap-1">{renderCalendar()}</div>
         </div>
       )}
-      <input
-        type="text"
-        readOnly
-        value={selectedDate.format("HH:mm")}
-        className="border border-gray-300 px-3 w-full rounded-lg focus:outline-none"
-        onClick={() => setIsTimePickerOpen(!isTimePickerOpen)}
-      />
+      {pathname !== "/personnel" && (
+        <input
+          type="text"
+          readOnly
+          value={selectedDate.format("HH:mm")}
+          className="border border-gray-300 px-3 w-full rounded-lg focus:outline-none"
+          onClick={() => setIsTimePickerOpen(!isTimePickerOpen)}
+        />
+      )}
+
       {isTimePickerOpen && (
-        <div ref={timePickerRef} className="time-picker absolute top-16 left-0 z-10 bg-white border border-gray-300 p-3 rounded-lg flex justify-between">
+        <div
+          ref={timePickerRef}
+          className="time-picker absolute top-16 left-0 z-10 bg-white border border-gray-300 p-3 rounded-lg flex justify-between"
+        >
           <select
             value={selectedDate.minutes()}
             onChange={handleMinuteChange}
