@@ -22,7 +22,6 @@ const JalaliDatePicker: React.FC<JalaliDatePickerProps> = ({
   const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
   const timePickerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  console.log(pathname)
   const years = Array.from({ length: 20 }, (_, i) => moment().jYear() - 5 + i); // 5 years before and 5 years after current year
   const months = [
     "فروردین",

@@ -28,12 +28,22 @@ import moment, { Moment } from "moment-jalaali";
 import { useState, useEffect } from "react";
 
 type Permission = {
-  ID: string;
+  ID: number;
   name: string;
 };
 
 type Permissions = {
   [key: string]: Permission[];
+};
+
+type NewPersonnel = {
+  Fname: string;
+  Lname: string;
+  Phone: string;
+  Title: string;
+  BDay: Moment | null;
+  Permissions: string | null;
+  Manager: string;
 };
 
 const Checkbox: React.FC<{
@@ -57,10 +67,19 @@ export default function PersonnelList() {
     [key: string]: boolean;
   }>({});
   const [permisisonModal, setModal] = useState<boolean>(false);
-  const [personnels, setPersonnel] = useState<any[]>([]);
+  const [personnels, setPersonnel] = useState<any[] | null>(null);
   const [managers, setManagers] = useState<[] | null>(null);
   const [bDay, setBday] = useState(moment());
   const [statusFilter, setStatusFilter] = useState("all");
+  const [newPersonnel, setNewPersonnel] = useState<NewPersonnel>({
+    Fname: "",
+    Lname: "",
+    Phone: "",
+    Title: "",
+    BDay: moment(),
+    Permissions: "",
+    Manager: "",
+  });
 
   useEffect(() => {
     async function GetPersonnel() {
@@ -83,16 +102,46 @@ export default function PersonnelList() {
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = e.target;
-    setCheckedPermissions((prev) => ({
-      ...prev,
-      [id]: checked,
-    }));
+    setCheckedPermissions((prev) => {
+      const newCheckedPermissions = { ...prev };
+      if (checked) {
+        newCheckedPermissions[id] = checked;
+      } else {
+        delete newCheckedPermissions[id];
+      }
+      return newCheckedPermissions;
+    });
   };
 
-  const filteredPersonnels = personnels.filter((user) => {
+  const filteredPersonnels = personnels?.filter((user) => {
     if (statusFilter === "all") return true;
     return user.Status === statusFilter;
   });
+
+  const getPermissionNameById = (id: string): string | undefined => {
+    for (const main in permissions) {
+      const subPermissions = permissions[main];
+      const permission = subPermissions.find((p) => p.ID === Number(id));
+      if (permission) {
+        return permission.name;
+      }
+    }
+    return undefined;
+  };
+
+  // Function to update the newPersonnel state
+  const updatePersonnel = (field: keyof NewPersonnel, value: string) => {
+    setNewPersonnel((prevState) => ({
+      ...prevState,
+      [field]: value,
+    }));
+  };
+
+  // Example usage
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    updatePersonnel(name as keyof NewPersonnel, value);
+  };
 
   return (
     <div className="space-y-5">
@@ -162,12 +211,66 @@ export default function PersonnelList() {
                 شد.
               </SheetDescription>
             </SheetHeader>
+            {permisisonModal && (
+              <div className="fixed top-0 left-0 w-full h-screen bg-black/30 flex items-center justify-center backdrop-blur-lg z-50">
+                <div className="w-[40%] h-[60%] bg-white shadow-xl rounded-2xl p-5">
+                  <div className="h-[5%] w-full">
+                    <h2>انتخاب سطح دسترسی کاربر</h2>
+                  </div>
+                  <div className="w-full max-h-[80%] h-[80%] overflow-auto">
+                    {Object.keys(permissions).map((main) => (
+                      <div key={main} className="my-5 border p-3 rounded-xl">
+                        <div className="flex items-center gap-1">
+                          <p className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                            {main}
+                          </p>
+                        </div>
+                        <div className="mr-2 border-r mt-3 pr-4 space-y-3">
+                          {permissions[main].map((sub) => (
+                            <div
+                              key={sub.ID}
+                              className="flex items-center gap-1"
+                            >
+                              <Checkbox
+                                id={String(sub.ID)}
+                                className="size-5"
+                                checked={!!checkedPermissions[sub.ID]}
+                                onChange={handleCheckboxChange}
+                              />
+                              <label
+                                htmlFor={String(sub.ID)}
+                                className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                {sub.name}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="h-[15%] w-full flex items-end justify-end">
+                    <button
+                      type="button"
+                      onClick={() => setModal(false)}
+                      className="text-white bg-emerald-400 py-2 px-4 w-fit rounded-xl"
+                    >
+                      تایید دسترسی
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="space-y-5 my-5">
               <div className="grid grid-cols-2 gap-3">
                 <div className="w-full">
                   <p className="text-sm mb-2">نام</p>
                   <input
                     type="text"
+                    name="Fname"
+                    value={newPersonnel.Fname}
+                    onChange={handleInputChange}
                     className="border border-gray-300 p-2 w-full rounded-lg focus:outline-none"
                   />
                 </div>
@@ -175,6 +278,9 @@ export default function PersonnelList() {
                   <p className="text-sm mb-2">نام خانوادگی</p>
                   <input
                     type="text"
+                    name="Lname"
+                    value={newPersonnel.Lname}
+                    onChange={handleInputChange}
                     className="border border-gray-300 p-2 w-full rounded-lg focus:outline-none"
                   />
                 </div>
@@ -182,6 +288,9 @@ export default function PersonnelList() {
                   <p className="text-sm mb-2">شماره همراه</p>
                   <input
                     type="text"
+                    name="Phone"
+                    value={newPersonnel.Phone}
+                    onChange={handleInputChange}
                     className="border border-gray-300 p-2 w-full rounded-lg focus:outline-none"
                   />
                 </div>
@@ -189,6 +298,9 @@ export default function PersonnelList() {
                   <p className="text-sm mb-2">سمت شغلی</p>
                   <input
                     type="text"
+                    name="Title"
+                    value={newPersonnel.Title}
+                    onChange={handleInputChange}
                     className="border border-gray-300 p-2 w-full rounded-lg focus:outline-none"
                   />
                 </div>
@@ -196,53 +308,61 @@ export default function PersonnelList() {
               <div className="border p-3 rounded-lg">
                 <p className="text-sm mb-2">تاریخ تولد (اختیاری)</p>
                 <JalaliDatePicker
-                  value={bDay}
                   name={"Bday"}
+                  value={bDay}
                   onChange={setBday}
                 />
               </div>
               <div className="border p-3 rounded-lg">
                 <div className="flex items-center justify-between">
                   <p className="text-sm">دسترسی ها</p>
-                  <button type="button" onClick={()=>setModal(true)} className="text-sm text-blue-400">افزودن</button>
+                  <button
+                    type="button"
+                    onClick={() => setModal(true)}
+                    className="text-sm text-blue-400"
+                  >
+                    افزودن
+                  </button>
                 </div>
-                <div className="grid grid-cols-5 gap-3 rounded-xl mt-3">
-                  <div className="w-fit bg-gray-100 rounded-full py-1 px-2 text-xs text-gray-400 flex items-center gap-2">
-                    <button className="mt-1" type="button">
-                      X
-                    </button>
-                    <p>بایگانی</p>
-                  </div>
+                <div className="flex flex-wrap gap-3 rounded-xl mt-3">
+                  {Object.keys(checkedPermissions).map((id) => (
+                    <div
+                      className="w-fit bg-gray-100 rounded-full py-1 px-2 text-xs text-gray-400 flex items-center gap-2"
+                      key={id}
+                    >
+                      <p>{getPermissionNameById(id)}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
               <div>
                 <p className="text-sm mb-2">انتخاب سرپرست</p>
-                <Select dir="rtl">
+                <Select
+                  dir="rtl"
+                  onValueChange={(e) => setNewPersonnel(e)}
+                  name="Manager"
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="انتخاب" />
                   </SelectTrigger>
                   <SelectContent>
-                    {managers?.map((month: string, index: number) => (
-                      <SelectItem value={month} key={index}>
-                        {month}
-                      </SelectItem>
-                    ))}
+                    {personnels?.map(
+                      (personnel: any, index: number) =>
+                        personnel.Status == "active" && (
+                          <SelectItem value={personnel.ID} key={index}>
+                            {personnel.Fname + " " + personnel.Lname}
+                          </SelectItem>
+                        )
+                    )}
                   </SelectContent>
                 </Select>
-              </div>
-              <div className="border p-3 rounded-lg">
-                <p className="text-sm mb-2">مبلغ مساعده (تومان)</p>
-                <input
-                  type="text"
-                  className="border border-gray-300 p-2 w-full rounded-lg focus:outline-none"
-                />
               </div>
               <div>
                 <button
                   type="button"
                   className="bg-emerald-400 text-white shadow-xl shadow-emerald-200 py-3 w-full rounded-lg"
                 >
-                  ثبت مساعده
+                  ثبت پرسنل جدید
                 </button>
               </div>
             </div>
@@ -263,7 +383,7 @@ export default function PersonnelList() {
             </tr>
           </thead>
           <tbody className="text-right">
-            {filteredPersonnels.map((user: any, index: number) => (
+            {filteredPersonnels?.map((user: any, index: number) => (
               <tr className="border-b" key={index}>
                 <td className="py-5 px-5">
                   <div className="flex items-center gap-2">
@@ -347,50 +467,6 @@ export default function PersonnelList() {
           </tbody>
         </table>
       </div>
-      {permisisonModal && (
-        <div className="fixed -top-5 left-0 w-full h-screen bg-black/30 flex items-center justify-center backdrop-blur-lg z-[99999]">
-          <div className="w-[40%] h-[60%] bg-white shadow-xl rounded-2xl p-5">
-            <div className="h-[5%] w-full">
-              <h2>انتخاب سطح دسترسی کاربر</h2>
-            </div>
-            <div className="w-full max-h-[80%] h-[80%] overflow-auto">
-              {Object.keys(permissions).map((main) => (
-                <div key={main} className="my-5 border p-3 rounded-xl">
-                  <div className="flex items-center gap-1">
-                    <p className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      {main}
-                    </p>
-                  </div>
-                  <div className="mr-2 border-r mt-3 pr-4 space-y-3">
-                    {permissions[main].map((sub) => (
-                      <div key={sub.ID} className="flex items-center gap-1">
-                        <Checkbox
-                          id={sub.ID}
-                          className="size-5"
-                          checked={!!checkedPermissions[sub.ID]}
-                          onChange={handleCheckboxChange}
-                        />
-                        <label
-                          htmlFor={sub.ID}
-                          className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          {sub.name}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="h-[15%] w-full flex items-end justify-end">
-              <button type="button" onClick={()=>setModal(false)} className="text-white bg-emerald-400 py-2 px-4 w-fit rounded-xl">
-                تایید دسترسی
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
