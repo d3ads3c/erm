@@ -23,15 +23,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Toaster } from "@/components/ui/toaster";
+import { toast, useToast } from "@/hooks/use-toast";
 import JalaliDatePicker from "@/components/DatePicker";
 import moment, { Moment } from "moment-jalaali";
 import { useState, useEffect } from "react";
+import { Value } from "@radix-ui/react-select";
+import { split } from "postcss/lib/list";
 
-type Permission = {
+interface Permission {
   ID: number;
   name: string;
-};
-
+  bg: string;
+  text: string;
+}
 type Permissions = {
   [key: string]: Permission[];
 };
@@ -62,13 +67,14 @@ const Checkbox: React.FC<{
 );
 
 export default function PersonnelList() {
+  const { toast } = useToast();
   const [permissions, setPermissions] = useState<Permissions>({});
   const [checkedPermissions, setCheckedPermissions] = useState<{
     [key: string]: boolean;
   }>({});
   const [permisisonModal, setModal] = useState<boolean>(false);
   const [personnels, setPersonnel] = useState<any[] | null>(null);
-  const [managers, setManagers] = useState<[] | null>(null);
+  const [managers, setManagers] = useState<string | null>(null);
   const [bDay, setBday] = useState(moment());
   const [statusFilter, setStatusFilter] = useState("all");
   const [newPersonnel, setNewPersonnel] = useState<NewPersonnel>({
@@ -80,6 +86,20 @@ export default function PersonnelList() {
     Permissions: "",
     Manager: "",
   });
+
+  const initialPersonnelState: NewPersonnel = {
+    Fname: "",
+    Lname: "",
+    Phone: "",
+    Title: "",
+    BDay: moment(),
+    Permissions: "",
+    Manager: "",
+  };
+
+  const initialCheckedPermissions: { [key: string]: boolean } = {};
+  const initialManagers: string | null = null;
+  const initialBday = moment();
 
   useEffect(() => {
     async function GetPersonnel() {
@@ -93,6 +113,7 @@ export default function PersonnelList() {
       await fetch("/api/personnel/permissions")
         .then((res) => res.json())
         .then((data) => {
+          console.log(data);
           setPermissions(data);
         });
     }
@@ -138,11 +159,86 @@ export default function PersonnelList() {
   };
 
   // Example usage
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    updatePersonnel(name as keyof NewPersonnel, value);
+    if (name == "Phone") {
+      let Phone = value;
+      // Remove any non-numeric characters
+      Phone = value.replace(/[^\d]/g, "");
+
+      // Limit input value to 11 characters
+      if (value.length > 11) {
+        Phone = value.slice(0, 11);
+      }
+      updatePersonnel(name as keyof NewPersonnel, Phone);
+    } else {
+      updatePersonnel(name as keyof NewPersonnel, value);
+    }
+  };
+  const submitData = () => {
+    // Convert checkedPermissions to a string of comma-separated IDs
+    const checkedPermissionsString = Object.keys(checkedPermissions)
+      .filter((key) => checkedPermissions[key])
+      .join(", ");
+
+    // Update newPersonnel.Permissions and newPersonnel.Manager
+    const updatedNewPersonnel = {
+      ...newPersonnel,
+      Permissions: checkedPermissionsString,
+      Manager: managers || "",
+      BDay: bDay.format("jYYYY/jMM/jDD"),
+    };
+
+    const dataString = JSON.stringify(updatedNewPersonnel);
+
+    // Now you can post dataString to your endpoint
+    fetch("/api/personnel/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: dataString }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data == "Mobile Exist") {
+          toast({
+            variant: "destructive",
+            description: "کاربری با این شماره وجود دارد.",
+          });
+        } else if (data == "User Stored") {
+          toast({
+            description: "پرسنل جدید ذخیره شد.",
+          });
+          setNewPersonnel({ ...initialPersonnelState });
+          setCheckedPermissions({ ...initialCheckedPermissions });
+          setManagers(initialManagers);
+          setBday(initialBday);
+        }
+      });
   };
 
+  const findPermissionDetails = (id: number) => {
+    for (const key in permissions) {
+      const permissionArray = permissions[key];
+      for (const permission of permissionArray) {
+        if (permission.ID === id) {
+          return {
+            name: permission.name,
+            bg: permission.bg,
+            text: permission.text,
+          };
+        }
+      }
+    }
+    return {
+      name: "Unknown Permission",
+      bg: "#ffffff",
+      text: "#000000",
+    };
+  };
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -339,7 +435,7 @@ export default function PersonnelList() {
                 <p className="text-sm mb-2">انتخاب سرپرست</p>
                 <Select
                   dir="rtl"
-                  onValueChange={(e) => setNewPersonnel(e)}
+                  onValueChange={(e) => setManagers(e)}
                   name="Manager"
                 >
                   <SelectTrigger className="w-full">
@@ -360,6 +456,7 @@ export default function PersonnelList() {
               <div>
                 <button
                   type="button"
+                  onClick={submitData}
                   className="bg-emerald-400 text-white shadow-xl shadow-emerald-200 py-3 w-full rounded-lg"
                 >
                   ثبت پرسنل جدید
@@ -403,19 +500,41 @@ export default function PersonnelList() {
                   </div>
                 </td>
                 <td>{user.Manager}</td>
+                <td>{user.Departman}</td>
                 <td>
-                  <div className="rounded-lg py-1 px-2 bg-cyan-100 text-cyan-500 w-fit text-sm">
-                    {user.Departman}
+                  <div className="flex flex-wrap max-w-[400px] my-3 items-center gap-3">
+                    {Array.isArray(user.Permission) ? (
+                      user.Permission.map((id: number, index: number) => {
+                        const { name, bg, text } = findPermissionDetails(id);
+                        return (
+                          <div
+                            key={index}
+                            className="rounded-lg py-1 px-2 w-fit text-xs"
+                            style={{ backgroundColor: bg, color: text }}
+                          >
+                            {name}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div
+                        className="rounded-lg py-1 px-2 w-fit text-xs"
+                        style={{
+                          backgroundColor: findPermissionDetails(
+                            user.Permission
+                          ).bg,
+                          color: findPermissionDetails(user.Permission).text,
+                        }}
+                      >
+                        {findPermissionDetails(user.Permission).name}
+                      </div>
+                    )}
                   </div>
                 </td>
+
                 <td>
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-lg py-1 px-2 bg-emerald-100 text-emerald-500 w-fit text-sm">
-                      {user.Permission}
-                    </div>
-                  </div>
+                  {user.BDay}
                 </td>
-                <td>1401/03/02</td>
 
                 <td>
                   {user.Status == "active" ? (
@@ -467,6 +586,7 @@ export default function PersonnelList() {
           </tbody>
         </table>
       </div>
+      <Toaster />
     </div>
   );
 }

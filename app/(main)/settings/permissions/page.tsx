@@ -1,7 +1,5 @@
-export default function PermisisonPage(){
-    return(
-        <div>
-            
-        </div>
-    )
+import PermissionsComp from "@/components/settings/Permissions";
+
+export default function PermisisonPage() {
+  return <PermissionsComp />;
 }

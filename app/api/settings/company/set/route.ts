@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     formData.append("RegDate", body.RegDate);
     formData.append("PostalCode", body.PostalCode);
     formData.append("Address", body.Address);
-    const response = await fetch("http://192.168.1.123:8001/settings/company/set", {
+    const response = await fetch("http://192.168.1.123:8000/settings/company/set", {
       method: "POST",
       body: formData,
     });

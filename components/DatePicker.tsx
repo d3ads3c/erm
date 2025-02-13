@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import moment from "moment-jalaali";
 import { usePathname } from "next/navigation";
 
-moment.loadPersian({ dialect: "persian-modern", usePersianDigits: true });
+moment.loadPersian({ dialect: "persian-modern", usePersianDigits: false });
 
 interface JalaliDatePickerProps {
   value: moment.Moment;
@@ -22,7 +22,7 @@ const JalaliDatePicker: React.FC<JalaliDatePickerProps> = ({
   const [isTimePickerOpen, setIsTimePickerOpen] = useState(false);
   const timePickerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const years = Array.from({ length: 20 }, (_, i) => moment().jYear() - 5 + i); // 5 years before and 5 years after current year
+  const years = Array.from({ length: 73 }, (_, i) => moment().jYear() - 70 + i);
   const months = [
     "فروردین",
     "اردیبهشت",
@@ -38,8 +38,8 @@ const JalaliDatePicker: React.FC<JalaliDatePickerProps> = ({
     "اسفند",
   ];
 
-  const hours = Array.from({ length: 24 }, (_, i) => i); // Hours from 0 to 23
-  const minutes = Array.from({ length: 60 }, (_, i) => i); // Minutes from 0 to 59
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const minutes = Array.from({ length: 60 }, (_, i) => i);
 
   const currentMonth = moment(selectedDate).startOf("jMonth");
   const daysInMonth = currentMonth.daysInMonth();

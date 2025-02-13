@@ -1,14 +1,24 @@
 "use client";
 import { useState, useEffect } from "react";
 
+type Permission = {
+  ID: number;
+  name: string;
+};
+
+type Permissions = {
+  [key: string]: Permission[];
+};
+
 export default function PermissionsComp() {
-  const [Permissions, setPemissions] = useState<[] | null>(null);
+  const [Permissions, setPermissions] = useState<Permissions>({});
 
   useEffect(() => {
-    fetch("/api/settings/departmans/list")
+    fetch("/api/settings/permissions/list")
       .then((res) => res.json())
       .then((data) => {
-        setPemissions(data);
+        console.log(data);
+        setPermissions(data);
       });
   }, []);
 
@@ -22,19 +32,24 @@ export default function PermissionsComp() {
           <thead className="bg-gray-100 rounded-xl text-gray-500 text-right">
             <tr>
               <th className="rounded-r-xl py-3 px-5">#</th>
-              <th>نام بخش</th>
+              <th>نام دسترسی</th>
               <th>اعضاء</th>
               <th>وضعیت</th>
               <th className="rounded-l-xl py-3 px-5 text-center">عملیات</th>
             </tr>
           </thead>
           <tbody className="text-right">
-            {Departmans?.map((dp: any, index: number) => (
+            {Object.keys(Permissions).map((main: any, index: number) => (
               <tr key={index} className="border-b">
-                <td className="py-5 px-5">{dp.ID}</td>
-                <td>{dp.Name}</td>
+                <td className="py-5 px-5">{index + 1}</td>
+                <td>
+                  <div className="flex items-center gap-3 ">
+                    <div className="rounded-full size-4 bg-purple-100 outline outline-cyan-500 outline-offset-1 shadow-xl shadow-cyan-200"></div>
+                    {main}
+                  </div>
+                </td>
                 <td>3 نفر</td>
-                <td>{dp.Status}</td>
+                <td>{main}</td>
                 <td></td>
               </tr>
             ))}
