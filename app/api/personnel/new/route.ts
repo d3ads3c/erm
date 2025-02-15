@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   formData.append("Manager", parsedData.Manager);
 
   // Forward the data to another address
-  const response = await fetch('http://192.168.1.123:8000/personnel/new', {
+  const response = await fetch('http://192.168.1.139:8000/personnel/new', {
     method: 'POST',
     body: formData
   });

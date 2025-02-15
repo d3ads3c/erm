@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
         formData.append("otp", body.otp);
 
 
-        const response = await fetch("http://192.168.1.123:8000/login", {
+        const response = await fetch("http://192.168.1.139:8000/login", {
             method: "POST",
             body: formData,
         });
