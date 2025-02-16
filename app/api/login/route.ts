@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
         });
         const data = await response.json();
         if (data.token) {
+            console.log(data.token)
             // Function to set cookie
             function setCookie(
                 name: string,
@@ -43,8 +44,10 @@ export async function POST(req: NextRequest) {
             const response = NextResponse.json({ msg: "LoggedIn", Fname: data.Fname, Lname: data.Lname, Title: data.Title, Manager: data.Manager, Departman: data.Departman, Status: data.Status });
             response.headers.set("Set-Cookie", cookieHeader);
             return response;
+        } else if (data.msg == "invalid") {
+            return NextResponse.json({ msg: "invalid" });
         } else {
-            return NextResponse.json({ msg: "Not Found" });
+            return NextResponse.json({ msg: "otp set" });
         }
     } catch {
         return NextResponse.json({ msg: "An error occurred" });

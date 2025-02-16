@@ -1,7 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+// Define the expected result type
+interface LoginCheckResult {
+  Status: string;
+}
+
+export async function middleware(req: NextRequest) {
+  const { pathname, origin } = req.nextUrl;
   const loggedUserCookie = req.cookies.get("LoggedUser");
 
   if (!loggedUserCookie && pathname !== "/login") {
@@ -19,6 +24,53 @@ export function middleware(req: NextRequest) {
   }
 
   // Continue with the request if none of the conditions matched
+
+  const formData = new FormData();
+  if (loggedUserCookie?.value) {
+    formData.append("Token", loggedUserCookie.value);
+
+    async function CheckLogin(): Promise<LoginCheckResult> {
+      const response = await fetch("http://192.168.1.139:8000/login/check", {
+        method: "POST",
+        body: formData
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        return data as LoginCheckResult;
+      } else {
+        throw new Error("Response is not JSON");
+      }
+    }
+
+    try {
+      const result = await new Promise<LoginCheckResult>((resolve, reject) => {
+        setTimeout(async () => {
+          try {
+            const data = await CheckLogin();
+            resolve(data);
+          } catch (error) {
+            reject(error);
+          }
+        }, 3000); // 3 seconds delay
+      });
+      console.log(result)
+      if (result.Status !== "active") {
+        const res = NextResponse.redirect(`${origin}/login`);
+        res.cookies.delete("LoggedUser");
+        return res;
+      }
+    } catch (error) {
+      console.error("Error checking login status:", error);
+      const res = NextResponse.redirect(`${origin}/login`);
+      res.cookies.delete("LoggedUser");
+      return res;
+    }
+  }
+
   return NextResponse.next();
 }
 

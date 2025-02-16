@@ -8,6 +8,9 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { Toaster } from "@/components/ui/toaster";
+import { toast, useToast } from "@/hooks/use-toast";
+import LoadingScreen from "@/components/LoadingScreen";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,6 +18,7 @@ export default function LoginPage() {
   const [numbers, setNumbers] = useState<string[]>([]);
   const [step, setStep] = useState<string>("number");
   const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +35,7 @@ export default function LoginPage() {
     setInputValue(value);
     setPhone(value);
   };
+
   const sendOTP = () => {
     fetch("/api/login", {
       method: "POST",
@@ -41,21 +46,25 @@ export default function LoginPage() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.msg == "LoggedIn") {
           localStorage.setItem(`UserInfo`, JSON.stringify(data));
-          //   for (const key in data) {
-          //     if (data.hasOwnProperty(key)) {
-          //       localStorage.setItem(key, data[key]);
-          //     }
-          //   }
           router.push("/dashboard");
+        } else if (data.msg == "otp set") {
+          setLoading(false);
+          setStep("otp");
+        } else if (data.msg == "invalid") {
+          setLoading(false);
+          toast({
+            variant: "destructive",
+            description: "کد ورود اشتباه است!",
+          });
         }
       });
-    setStep("otp");
   };
+
   return (
     <div className="w-full h-screen flex items-center justify-center bg-white">
+      <LoadingScreen show={loading} />
       <div className="bg-white/20 backdrop-blur-xl rounded-2xl p-10 w-1/3 h-fit space-y-5 px-28">
         <div className="w-full">
           <Image
@@ -88,7 +97,10 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => (
-                      setStep("number"), setOtp(""), setPhone("")
+                      setStep("number"),
+                      setOtp(""),
+                      setPhone(""),
+                      setInputValue("")
                     )}
                     className="text-cyan-500 text-sm"
                   >
@@ -119,14 +131,20 @@ export default function LoginPage() {
         <div>
           <button
             type="button"
-            onClick={sendOTP}
-            className="bg-red-500 text-white shadow-xl shadow-red-200 py-3 w-full rounded-lg"
+            onClick={() => (sendOTP(), setLoading(true))}
+            className={`py-3 w-full rounded-lg ${
+              inputValue.trim().length !== 11
+                ? "bg-gray-100 text-gray-300 cursor-not-allowed"
+                : "bg-red-500 text-white shadow-xl shadow-red-200"
+            }`}
+            disabled={inputValue.trim().length !== 11}
           >
             ادامه
           </button>
         </div>
       </div>
       <div className="w-2/3 bg-[url('/img/background.jpg')] h-full bg-cover bg-center bg-no-repeat"></div>
+      <Toaster />
     </div>
   );
 }
