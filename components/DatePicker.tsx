@@ -41,9 +41,21 @@ const JalaliDatePicker: React.FC<JalaliDatePickerProps> = ({
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const minutes = Array.from({ length: 60 }, (_, i) => i);
 
+  const getDaysInMonth = (month: number, year: number) => {
+    if (month >= 6 && month <= 10) return 30;
+    if (month === 11) {
+      const leapYear = moment.jIsLeapYear(year);
+      return leapYear ? 30 : 29;
+    }
+    return 31;
+  };
+
   const currentMonth = moment(selectedDate).startOf("jMonth");
-  const daysInMonth = currentMonth.daysInMonth();
+  const daysInMonth = getDaysInMonth(currentMonth.jMonth(), currentMonth.jYear());
   const firstDayOfMonth = currentMonth.startOf("jMonth").day();
+
+  // Adjust the first day of the month to align with Persian calendar starting on Saturday
+  const adjustedFirstDayOfMonth = (firstDayOfMonth + 1) % 7;
 
   const handleDateClick = (day: number) => {
     const date = moment(currentMonth).jDate(day);
@@ -102,7 +114,7 @@ const JalaliDatePicker: React.FC<JalaliDatePickerProps> = ({
 
   const renderCalendar = () => {
     const days = [];
-    for (let i = 0; i < firstDayOfMonth; i++) {
+    for (let i = 0; i < adjustedFirstDayOfMonth; i++) {
       days.push(<div key={`empty-${i}`} className="empty-day"></div>);
     }
     for (let day = 1; day <= daysInMonth; day++) {

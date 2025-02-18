@@ -62,7 +62,9 @@ export default function SideBar() {
               <Link
                 href={"/dashboard"}
                 className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
-                  pathname.includes("/dashboard") ? "bg-red-500" : "hover:bg-gray-100"
+                  pathname.includes("/dashboard")
+                    ? "bg-red-500"
+                    : "hover:bg-gray-100"
                 }`}
               >
                 <div
@@ -139,7 +141,7 @@ export default function SideBar() {
                   >
                     <p>مساعده</p>
                   </Link>
-                  <Link
+                  {/* <Link
                     href={"#"}
                     className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
                       pathname.includes("/chat")
@@ -148,7 +150,7 @@ export default function SideBar() {
                     }`}
                   >
                     <p>مکاتبات</p>
-                  </Link>
+                  </Link> */}
                 </CollapsibleContent>
               </Collapsible>
             </li>
@@ -194,12 +196,12 @@ export default function SideBar() {
                   >
                     <p>پرسنل</p>
                   </Link>
-                  <Link
+                  {/* <Link
                     href={"#"}
                     className="flex items-center gap-2 text-gray-500 px-3 py-2 rounded-xl hover:bg-gray-100"
                   >
                     <p>فرم ها</p>
-                  </Link>
+                  </Link> */}
                 </CollapsibleContent>
               </Collapsible>
             </li>
@@ -235,7 +237,7 @@ export default function SideBar() {
                 </CollapsibleContent>
               </Collapsible>
             </li>
-            <li>
+            {/* <li>
               <Link
                 href={"#"}
                 className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100"
@@ -244,6 +246,17 @@ export default function SideBar() {
                   <i className="fi fi-sr-list-check mt-2 text-red-500"></i>
                 </div>
                 <p>پروژه ها</p>
+              </Link>
+            </li> */}
+            <li>
+              <Link
+                href={"/aftersale"}
+                className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100"
+              >
+                <div className="size-10 flex items-center justify-center rounded-xl bg-gray-100">
+                  <i className="fi fi-br-customer-care mt-2 text-red-500"></i>
+                </div>
+                <p>خدمات پس از فروش</p>
               </Link>
             </li>
             <li>
@@ -258,10 +271,12 @@ export default function SideBar() {
               </Link>
             </li>
             <li>
-            <Link
+              <Link
                 href={"/settings"}
                 className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
-                  pathname.includes("/settings") ? "bg-red-500" : "hover:bg-gray-100"
+                  pathname.includes("/settings")
+                    ? "bg-red-500"
+                    : "hover:bg-gray-100"
                 }`}
               >
                 <div
