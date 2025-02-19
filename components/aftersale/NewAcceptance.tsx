@@ -65,7 +65,19 @@ export default function NewacceptanceComp() {
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const { name } = e.target;
+    let { value } = e.target;
+  
+    if (name == "phone") {
+      // Remove any non-numeric characters
+      value = value.replace(/[^\d]/g, "");
+  
+      // Limit input value to 11 characters
+      if (value.length > 11) {
+        value = value.slice(0, 11);
+      }
+    }
+  
     if (name in acceptance.customer) {
       setAcceptance((prev) => ({
         ...prev,
@@ -107,7 +119,6 @@ export default function NewacceptanceComp() {
   };
 
   const SubmitForm = async () => {
-
     const response = await fetch("/api/aftersale/acceptance/new", {
       method: "POST",
       headers: {
