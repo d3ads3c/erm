@@ -31,7 +31,7 @@ export default function AfterSaleTemplate({
         <Link
           href={"/aftersale/repair"}
           className={`${
-            pathname === "/aftersale/repair" ? "min-w-max shadow-lg shadow-red-200 rounded-lg py-2 px-5 bg-red-500 text-white" : "min-w-max rounded-lg py-2 px-5 bg-white border border-gray-200 text-gray-700"
+            pathname.includes("/aftersale/repair") ? "min-w-max shadow-lg shadow-red-200 rounded-lg py-2 px-5 bg-red-500 text-white" : "min-w-max rounded-lg py-2 px-5 bg-white border border-gray-200 text-gray-700"
           }`}
         >
           <h2>تعمیرگاه</h2>

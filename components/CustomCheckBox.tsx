@@ -21,9 +21,9 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ id, label, checked, onC
         onChange={handleChange}
         className="hidden" 
       />
-      <label htmlFor={id} className="flex items-center cursor-pointer">
+      <label htmlFor={id} className="flex items-center cursor-pointer gap-1">
         <span
-          className={`w-4 h-4 border-2 border-gray-300 rounded ${
+          className={`w-4 h-4 border border-gray-300 rounded ${
             checked ? "bg-blue-500" : "bg-white"
           }`}
         ></span>

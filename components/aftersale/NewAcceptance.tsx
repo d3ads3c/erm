@@ -1,7 +1,9 @@
 "use client";
 
 import CustomCheckbox from "@/components/CustomCheckBox";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import JalaliDatePicker from "@/components/DatePicker";
+import moment, { Moment } from "moment-jalaali";
 
 interface NewAcceptance {
   customer: {
@@ -33,6 +35,7 @@ interface NewAcceptance {
 }
 
 export default function NewacceptanceComp() {
+  const [vDay, setVday] = useState(moment());
   const [acceptance, setAcceptance] = useState<NewAcceptance>({
     customer: {
       name: "",
@@ -62,22 +65,36 @@ export default function NewacceptanceComp() {
     },
   });
 
+  useEffect(() => {
+    {
+      setAcceptance((prevAcceptance) => ({
+        ...prevAcceptance,
+        customer: {
+          ...prevAcceptance.customer,
+          visitDate: vDay.format("jYYYY-jMM-jDD|HH:mm"),
+        },
+      }));
+    }
+  }, [vDay]);
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name } = e.target;
     let { value } = e.target;
-  
+
     if (name == "phone") {
       // Remove any non-numeric characters
       value = value.replace(/[^\d]/g, "");
-  
+
       // Limit input value to 11 characters
       if (value.length > 11) {
         value = value.slice(0, 11);
       }
+    } else if (name == "nationalId") {
+      value = value.replace(/[^\d]/g, "");
     }
-  
+
     if (name in acceptance.customer) {
       setAcceptance((prev) => ({
         ...prev,
@@ -171,16 +188,18 @@ export default function NewacceptanceComp() {
                   value={acceptance.customer.nationalId}
                   onChange={handleInputChange}
                   className="border border-gray-300 rounded-lg w-full p-2 focus:outline-none"
+                  pattern="\d{10}"
+                  maxLength={10}
+                  title="National ID must be exactly 10 digits."
+                  required
                 />
               </div>
               <div className="w-full space-y-1">
                 <p className="text-gray-500 text-sm">تاریخ مراجعه</p>
-                <input
-                  type="text"
-                  name="visitDate"
-                  value={acceptance.customer.visitDate}
-                  onChange={handleInputChange}
-                  className="border border-gray-300 rounded-lg w-full p-2 focus:outline-none"
+                <JalaliDatePicker
+                  name={"visitDate"}
+                  value={vDay}
+                  onChange={setVday}
                 />
               </div>
             </div>

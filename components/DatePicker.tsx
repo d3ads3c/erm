@@ -184,7 +184,7 @@ const JalaliDatePicker: React.FC<JalaliDatePickerProps> = ({
           <div className="days grid grid-cols-7 gap-1">{renderCalendar()}</div>
         </div>
       )}
-      {pathname !== "/personnel" && (
+      {(pathname !== "/personnel") && (
         <input
           type="text"
           readOnly
