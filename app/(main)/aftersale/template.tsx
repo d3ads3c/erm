@@ -36,6 +36,30 @@ export default function AfterSaleTemplate({
         >
           <h2>تعمیرگاه</h2>
         </Link>
+        <Link
+          href={"/aftersale/wearhouse"}
+          className={`${
+            pathname.includes("/aftersale/wearhouse") ? "min-w-max shadow-lg shadow-red-200 rounded-lg py-2 px-5 bg-red-500 text-white" : "min-w-max rounded-lg py-2 px-5 bg-white border border-gray-200 text-gray-700"
+          }`}
+        >
+          <h2>انبار</h2>
+        </Link>
+        <Link
+          href={"/aftersale/categories"}
+          className={`${
+            pathname.includes("/aftersale/categories") ? "min-w-max shadow-lg shadow-red-200 rounded-lg py-2 px-5 bg-red-500 text-white" : "min-w-max rounded-lg py-2 px-5 bg-white border border-gray-200 text-gray-700"
+          }`}
+        >
+          <h2>دسته بندی ها</h2>
+        </Link>
+        <Link
+          href={"/aftersale/settings"}
+          className={`${
+            pathname.includes("/aftersale/settings") ? "min-w-max shadow-lg shadow-red-200 rounded-lg py-2 px-5 bg-red-500 text-white" : "min-w-max rounded-lg py-2 px-5 bg-white border border-gray-200 text-gray-700"
+          }`}
+        >
+          <h2>تنظیمات</h2>
+        </Link>
       </div>
       {children}
     </div>

@@ -1,6 +1,12 @@
 "use client";
 import { useEffect, useState, ChangeEvent } from "react";
 import Image from "next/image";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Row {
   id: number;
@@ -13,6 +19,7 @@ interface Row {
 export default function RepairDetail() {
   const [rows, setRows] = useState<Row[]>([]);
   const [counter, setCounter] = useState(0);
+  const [Fee, setFee] = useState<boolean>(false);
   const [formValues, setFormValues] = useState({
     works: rows,
   });
@@ -65,13 +72,23 @@ export default function RepairDetail() {
           >
             <i className="fi fi-sr-comments mt-1"></i>
           </button> */}
-          <button
-            type="button"
-            disabled
-            className="bg-gray-100 rounded-xl size-10 text-gray-400 flex items-center justify-center"
-          >
-            <i className="fi fi-sr-comments mt-1"></i>
-          </button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  disabled
+                  className="bg-gray-100 rounded-xl size-10 text-gray-400 flex items-center justify-center"
+                >
+                  <i className="fi fi-sr-comments mt-1"></i>
+                </button>
+              </TooltipTrigger>
+              <TooltipContent className="bg-gray-100 text-gray-700">
+                <p>مشتری ثبت نام نکرده است</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
           <button
             type="button"
             className="border border-red-500 rounded-xl py-2 text-red-500 w-fit px-5 hover:bg-red-500 hover:text-white duration-150"
@@ -319,6 +336,54 @@ export default function RepairDetail() {
           </div>
         </div>
       </div>
+      {Fee && (
+        <div className="fixed top-0 left-0 w-full h-screen bg-black/30 flex items-center justify-center backdrop-blur-lg z-50">
+          <div className="w-[50%] h-[70%] bg-white shadow-xl rounded-2xl p-5">
+            <div className="h-[25%] w-full">
+              <h2>انتخاب سطح دسترسی کاربر</h2>
+              <div className="my-3">
+                <input
+                  type="text"
+                  name="search"
+                  id="search"
+                  placeholder="کد، شرح کالا ..."
+                  className="border rounded-xl p-2 w-full"
+                />
+              </div>
+              <div className="flex items-center gap-3 text-center bg-gray-100 p-3 rounded-xl text-gray-500">
+                <div className="w-1/12">کد</div>
+                <div className="w-4/12">شرح کار یا قطعه</div>
+                <div className="w-1/12">دسته</div>
+                <div className="w-4/12">قیمت (ریال)</div>
+                <div className="w-2/12">حذف</div>
+              </div>
+            </div>
+
+            <div className="w-full max-h-[60%] h-[60%] overflow-auto pt-3">
+              <div className="flex items-center gap-3 text-centerp-3 text-center rounded-xl text-gray-700 p-3">
+                <div className="w-1/12">0010</div>
+                <div className="w-4/12">خدمات نرم افزار</div>
+                <div className="w-1/12">خدمات</div>
+                <div className="w-4/12">6.000.000</div>
+                <button
+                  type="button"
+                  className="w-2/12 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white duration-150 rounded-xl px-3 py-2 text-sm"
+                >
+                  انتخاب
+                </button>
+              </div>
+            </div>
+            <div className="h-[15%] w-full flex items-end justify-end">
+              <button
+                type="button"
+                className="text-white bg-emerald-400 py-2 px-4 w-fit rounded-xl"
+              >
+                تایید دسترسی
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
