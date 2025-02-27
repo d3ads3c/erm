@@ -25,7 +25,20 @@ export default function CategoriesComp() {
                   </tr>
                 </thead>
                 <tbody>
-                    <td></td>
+                  <tr>
+                    <td className="py-3 px-5">12225</td>
+                    <td className="py-3 px-5">Apple</td>
+                    <td className="py-3 px-5">iPhone 16 Pro Max</td>
+                    <td className="py-3 px-5">China</td>
+                    <td className="py-3 px-5">
+                      <div className="bg-emerald-100 text-emerald-400 rounded-lg p-2 text-center text-sm font-bold">
+                        فعال
+                      </div>
+                    </td>
+                    <td>
+                      <button className="text-center w-full">مشاهده</button>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
