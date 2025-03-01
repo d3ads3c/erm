@@ -261,6 +261,36 @@ export default function SideBar() {
             </li>
             <li>
               <Link
+                href={"/warehouse"}
+                className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                  pathname.includes("/warehouse")
+                    ? "bg-red-500"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <div
+                  className={`size-10 flex items-center justify-center rounded-xl ${
+                    pathname.includes("/warehouse")
+                      ? "bg-red-100"
+                      : "bg-gray-100"
+                  }`}
+                >
+                  <i className="fi fi-sr-warehouse-alt mt-2 text-red-500"></i>
+                </div>
+                <p
+                  className={`${
+                    pathname.includes("/warehouse")
+                      ? "text-white"
+                      : "text-gray-500"
+                  }
+                  `}
+                >
+                  انبار
+                </p>
+              </Link>
+            </li>
+            <li>
+              <Link
                 href={"#"}
                 className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100"
               >
