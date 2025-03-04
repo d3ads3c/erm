@@ -16,18 +16,16 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 
-interface NewStorage {
+interface NewCategory {
   name: string;
-  manager: string;
 }
 
-export default function StoragesComp() {
+export default function CategoriesComp() {
   const [personnels, setPersonnel] = useState<any[] | null>(null);
-  const [newStorage, setNewStorage] = useState<NewStorage>({
+  const [newCategory, setNewCategory] = useState<NewCategory>({
     name: "",
-    manager: "",
   });
-  const [storageList, setStorageList] = useState<[] | null>(null);
+  const [categoryList, setCategoryList] = useState<[] | null>(null);
 
   async function GetPersonnel() {
     await fetch("/api/personnel/list")
@@ -36,30 +34,30 @@ export default function StoragesComp() {
         setPersonnel(data);
       });
   }
-  async function GetStorages() {
-    await fetch("/api/warehouse/storage/list")
+  async function GetCategories() {
+    await fetch("/api/warehouse/categories/list")
       .then((res) => res.json())
       .then((data) => {
-        setStorageList(data);
+        setCategoryList(data);
       });
   }
   useEffect(() => {
-    GetStorages();
+    GetCategories();
     GetPersonnel();
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setNewStorage((prevState) => ({
+    setNewCategory((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
   const SubmitStorage = () => {
-    fetch("/api/warehouse/storage/new", {
+    fetch("/api/warehouse/categories/new", {
       method: "POST",
-      body: JSON.stringify(newStorage),
+      body: JSON.stringify(newCategory),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -70,53 +68,26 @@ export default function StoragesComp() {
   return (
     <div>
       <div className="flex items-center justify-between mb-5">
-        <h1>مدیریت انبار ها</h1>
+        <h1>مدیریت دسته بندی ها</h1>
         <Sheet>
           <SheetTrigger className="text-white bg-emerald-400 py-2 px-5 rounded-lg font-bold hover:shadow-xl hover:shadow-emerald-200 duration-150">
-            افزودن انبار جدید
+            افزودن دسته بندی جدید
           </SheetTrigger>
           <SheetContent side={"left"}>
             <SheetHeader>
-              <SheetTitle>تعریف انبار جدید</SheetTitle>
+              <SheetTitle>تعریف دسته بندی جدید</SheetTitle>
             </SheetHeader>
             <div className="space-y-5 my-5">
               <div className="grid grid-cols-1 gap-5">
                 <div className="w-full">
-                  <p className="text-sm mb-2">نام انبار</p>
+                  <p className="text-sm mb-2">نام دسته بندی</p>
                   <input
                     type="text"
                     name="name"
-                    value={newStorage.name}
+                    value={newCategory.name}
                     onChange={handleInputChange}
                     className="border border-gray-300 p-2 w-full rounded-lg focus:outline-none"
                   />
-                </div>
-                <div>
-                  <p className="text-sm mb-2">انتخاب سرپرست</p>
-                  <Select
-                    dir="rtl"
-                    onValueChange={(e) =>
-                      setNewStorage((prevState) => ({
-                        ...prevState,
-                        manager: e,
-                      }))
-                    }
-                    name="manager"
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="انتخاب" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {personnels?.map(
-                        (personnel: any, index: number) =>
-                          personnel.Status == "active" && (
-                            <SelectItem value={personnel.ID} key={index}>
-                              {personnel.Fname + " " + personnel.Lname}
-                            </SelectItem>
-                          )
-                      )}
-                    </SelectContent>
-                  </Select>
                 </div>
               </div>
               <div>
@@ -125,7 +96,7 @@ export default function StoragesComp() {
                   onClick={SubmitStorage}
                   className="bg-emerald-400 text-white shadow-xl shadow-emerald-200 py-3 w-full rounded-lg"
                 >
-                  ثبت انبار جدید
+                  ثبت دسته بندی جدید
                 </button>
               </div>
             </div>
@@ -136,22 +107,20 @@ export default function StoragesComp() {
         <table className="w-full relative table mt-3">
           <thead className="text-gray-500 text-sm border-b rounded-xl font-light text-right">
             <tr>
-              <th className="rounded-r-xl py-3 px-5">شماره انبار</th>
-              <th>نام انبار</th>
-              <th>مسئول انبار</th>
+              <th className="rounded-r-xl py-3 px-5">شماره دسته بندی</th>
+              <th>نام دسته بندی</th>
               <th>موجودی کل</th>
-              <th>ارزش انبار</th>
+              <th>ارزش دسته بندی</th>
               <th>وضعیت</th>
               <th className="rounded-l-xl py-3 px-5 text-center">عملیات</th>
             </tr>
           </thead>
           <tbody className="max-h-[100px] overflow-auto text-right">
-            {storageList &&
-              storageList.map((storage: any, index: number) => (
+            {categoryList &&
+              categoryList.map((category: any, index: number) => (
                 <tr className="border-b border-gray-100" key={index}>
-                  <td className="p-5">{storage.ID}</td>
-                  <td>{storage.Name}</td>
-                  <td>{storage.Manager}</td>
+                  <td className="p-5">{category.ID}</td>
+                  <td>{category.Name}</td>
                   <td>250</td>
                   <td>
                     10.246.000.000{" "}
@@ -159,7 +128,7 @@ export default function StoragesComp() {
                   </td>
                   <td>
                     <div className="bg-emerald-100 text-emerald-400 rounded-full py-1 px-4 w-fit font-bold text-sm">
-                      {storage.Status}
+                      {category.Status}
                     </div>
                   </td>
                   <td>
