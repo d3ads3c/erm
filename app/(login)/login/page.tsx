@@ -63,16 +63,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-white">
+    <div className="w-full h-screen flex items-center justify-center xl:bg-gray-50">
       <LoadingScreen show={loading} />
-      <div className="bg-white/20 backdrop-blur-xl rounded-2xl p-10 w-1/3 h-fit space-y-5 px-28">
+      <div className="bg-white xl:shadow-2xl backdrop-blur-xl rounded-3xl py-20 xl:w-[35%] h-fit space-y-5 xl:px-20 w-full px-10">
         <div className="w-full">
           <Image
             src={"/img/logo/arman-ops.png"}
             width={150}
             height={150}
             alt="Arman Ops Logo"
-            className="mx-auto -mb-5"
+            className="mx-auto -my-10"
           ></Image>
         </div>
         <div>
@@ -83,10 +83,10 @@ export default function LoginPage() {
             <>
               <p>شماره همراه</p>
               <input
-                type="text"
+                type="number"
                 value={inputValue}
                 onChange={handleChange}
-                className="border border-gray-300 p-2 w-full rounded-lg focus:outline-none mt-1"
+                className="border border-gray-300 p-2 w-full rounded-xl focus:outline-none mt-1"
               />
             </>
           ) : (
@@ -115,7 +115,7 @@ export default function LoginPage() {
                     value={otp}
                     onChange={(value) => setOtp(value)}
                   >
-                    <InputOTPGroup className="mx-auto">
+                    <InputOTPGroup className="mx-auto xl:gap-9">
                       <InputOTPSlot index={4} />
                       <InputOTPSlot index={3} />
                       <InputOTPSlot index={2} />
@@ -132,7 +132,7 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={() => (sendOTP(), setLoading(true))}
-            className={`py-3 w-full rounded-lg ${
+            className={`py-3 w-full rounded-xl active:scale-95 duration-150 ${
               inputValue.trim().length !== 11
                 ? "bg-gray-100 text-gray-300 cursor-not-allowed"
                 : "bg-red-500 text-white shadow-xl shadow-red-200"
@@ -143,7 +143,6 @@ export default function LoginPage() {
           </button>
         </div>
       </div>
-      <div className="w-2/3 bg-[url('/img/background.jpg')] h-full bg-cover bg-center bg-no-repeat"></div>
       <Toaster />
     </div>
   );

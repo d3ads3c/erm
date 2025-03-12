@@ -11,7 +11,7 @@ export default function LoadingScreen({ show }: LoadingScreenProps) {
 
   return (
     <div className="fixed top-0 right-0 flex items-center justify-center h-screen w-full backdrop-blur-xl z-50">
-      <div className="w-[30%] bg-white rounded-3xl shadow-xl p-10">
+      <div className="xl:w-[30%] w-full  xl:bg-white rounded-3xl xl:shadow-xl p-10">
         <Image
           src={"/img/logo/arman-ops.png"}
           width={200}

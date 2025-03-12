@@ -22,12 +22,30 @@ interface Product {
   Status: string;
 }
 
+interface ImportDetail {
+  Title: string;
+  Serial: string;
+  Invoice: string;
+  Warehouse: string;
+  Extra: string;
+  Products: {};
+}
+
 export default function ImportStockComp() {
   const [rows, setRows] = useState<Row[]>([]);
   const [counter, setCounter] = useState(0);
   const [storageList, setStorageList] = useState<[] | null>(null);
+  const [selectedStorage, setSelectedStorage] = useState<string>("");
   const [productList, setProductList] = useState<Product[] | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [importDetail, setImportDetail] = useState<ImportDetail>({
+    Title: "",
+    Serial: "",
+    Invoice: "",
+    Warehouse: "",
+    Extra: "",
+    Products: {},
+  });
 
   // States for Dialog
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -101,6 +119,31 @@ export default function ImportStockComp() {
     GetProducts();
   }, []);
 
+  const HandleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setImportDetail((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const SubmitImport = async () => {
+    setImportDetail((prevState) => ({
+      ...prevState,
+      Products: JSON.stringify(rows),
+      Warehouse: selectedStorage,
+    }));
+    await fetch("/api/warehouse/stocks/import", {
+      method: "POST",
+      body: JSON.stringify(importDetail),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
   return (
     <div>
       <div className="flex items-center justify-between mb-5">
@@ -114,7 +157,8 @@ export default function ImportStockComp() {
                 <p className="text-gray-600 text-sm">عنوان حواله</p>
                 <input
                   type="text"
-                  name="name"
+                  name="Title"
+                  onChange={HandleChange}
                   className="border border-gray-300 p-2 w-full rounded-lg focus:outline-none"
                 />
               </div>
@@ -122,7 +166,8 @@ export default function ImportStockComp() {
                 <p className="text-gray-600 text-sm">شماره حواله</p>
                 <input
                   type="text"
-                  name="name"
+                  name="Serial"
+                  onChange={HandleChange}
                   className="border border-gray-300 p-2 w-full rounded-lg focus:outline-none"
                 />
               </div>
@@ -130,7 +175,8 @@ export default function ImportStockComp() {
                 <p className="text-gray-600 text-sm">انتخاب فاکتور</p>
                 <input
                   type="text"
-                  name="name"
+                  name="Invoice"
+                  onChange={HandleChange}
                   defaultValue="تنها با ماژول خرید و فروش"
                   disabled
                   className="border border-gray-300 p-2 w-full rounded-lg bg-gray-100 text-gray-400 focus:outline-none"
@@ -138,7 +184,11 @@ export default function ImportStockComp() {
               </div>
               <div className="w-full space-y-1">
                 <p className="text-gray-600 text-sm">انتخاب انبار</p>
-                <Select dir="rtl" name="manager">
+                <Select
+                  dir="rtl"
+                  name="Warehouse"
+                  onValueChange={(value) => setSelectedStorage(value)}
+                >
                   <SelectTrigger className="w-full h-10">
                     <SelectValue placeholder="انتخاب" />
                   </SelectTrigger>
@@ -269,14 +319,15 @@ export default function ImportStockComp() {
             </div>
             <textarea
               rows={5}
-              name="information"
+              name="Extra"
+              onChange={HandleChange}
               placeholder="متن توضیحات ..."
               className="border border-gray-300 p-2 w-full rounded-lg focus:outline-none"
             />
           </div>
           <div>
             <button
-              onClick={() => console.log(rows)}
+              onClick={SubmitImport}
               className="py-3 bg-emerald-400 text-white rounded-lg hover:bg-emerald-500 w-full duration-150 hover:shadow-xl hover:shadow-emerald-200"
             >
               ثبت ورود کالا
