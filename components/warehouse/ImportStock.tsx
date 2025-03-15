@@ -338,8 +338,8 @@ export default function ImportStockComp() {
 
       {/* Dialog Component */}
       {isDialogOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-5 rounded-lg w-[40%] max-h-[60%] overflow-auto">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-lg">
+          <div className="bg-white p-8 rounded-xl w-[50%] max-h-[70%] overflow-auto">
             <h2 className="mb-3 text-sm">
               {productList?.find(
                 (product: any) => product.ID === selectedRow?.product

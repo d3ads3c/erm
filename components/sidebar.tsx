@@ -141,8 +141,8 @@ export default function SideBar() {
                   >
                     <p>مساعده</p>
                   </Link>
-                  {/* <Link
-                    href={"#"}
+                  <Link
+                    href={"/chats"}
                     className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
                       pathname.includes("/chat")
                         ? "bg-red-100 text-red-500"
@@ -150,7 +150,7 @@ export default function SideBar() {
                     }`}
                   >
                     <p>مکاتبات</p>
-                  </Link> */}
+                  </Link>
                 </CollapsibleContent>
               </Collapsible>
             </li>
