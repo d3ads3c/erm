@@ -82,3 +82,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+.chat_select_height {
+  height: calc(100vh - 260px);
+  max-height: calc(100vh - 260px);
+}
+.chat_page{
+  height: calc(100vh - 150px);
+  max-height: calc(100vh - 150px);
+}
