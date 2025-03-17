@@ -8,15 +8,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function ChatPage() {
+  const divRef = useRef<HTMLDivElement | null>(null);
   const [userList, setUserList] = useState<[] | null>(null);
   const [userSearch, setUserSearch] = useState("");
   const [myChats, setMyChats] = useState<[] | null>(null);
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [chatMsg, setChatMsg] = useState<[] | null>(null);
   const [text, setText] = useState<string>("");
+  const [userID, setUserID] = useState<string | null>(null);
+
+  //   const scrollToEnd = () => {
+  //     if (divRef.current) {
+  //       divRef.current.scrollTop = divRef.current.scrollHeight;
+  //     }
+  //   };
 
   function AddNewChat(userID: string) {
     fetch("/api/chats/newchat", {
@@ -51,6 +59,7 @@ export default function ChatPage() {
       .then((res) => res.json())
       .then((data) => {
         setMyChats(data);
+        setUserID(data[0].User);
       });
   }
 
@@ -62,7 +71,12 @@ export default function ChatPage() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        if (selectedChat) {
+          ChatMsg(selectedChat);
+          MyChats();
+        }
       });
+    setText("");
   };
 
   async function GetPersonnel() {
@@ -75,7 +89,14 @@ export default function ChatPage() {
   useEffect(() => {
     GetPersonnel();
     MyChats();
-  }, []);
+    if (selectedChat) {
+      const interval = setInterval(() => ChatMsg(selectedChat), 5000);
+      return () => clearInterval(interval);
+    }
+    if (divRef.current) {
+      divRef.current.scrollTop = divRef.current.scrollHeight;
+    }
+  }, [selectedChat]);
 
   return (
     <div className="flex gap-2 chat_page">
@@ -181,9 +202,7 @@ export default function ChatPage() {
                         </div>
                       </div>
                       <p className="text-xs text-gray-400 w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                        با سلام و احترام خدمت همکاران محترم جهت بهره مندی از
-                        قابلیت های جدید نرم افزار مدیریت کسب و کار نسخه خود را
-                        به روز رسانی کنید.
+                        {chat.LastText}
                       </p>
                     </div>
                   </div>
@@ -229,70 +248,37 @@ export default function ChatPage() {
               <div></div>
             </div>
             {/* MSG */}
-            <div className="space-y-5 py-5 max-h-[80%] h-[80%] overflow-auto hide-scroll">
-              <div className="flex items-center justify-start w-full">
-                <div className="w-1/2">
-                  <div className="bg-red-600 text-white rounded-2xl p-3">
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Ut autem inventore ipsum minima temporibus incidunt illo
-                      aliquid, omnis ea quas voluptatem cumque modi eveniet rem
-                      assumenda vitae ullam totam mollitia!
-                    </p>
-                  </div>
-                  <p className="text-sm mt-3 text-gray-400">25 اسفند | 14:25</p>
-                </div>
-              </div>
-              <div className="flex items-center justify-end w-full">
-                <div className="w-1/2 bg-white text-gray-600 rounded-xl p-3">
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut
-                    autem inventore ipsum minima temporibus incidunt illo
-                    aliquid, omnis ea quas voluptatem cumque modi eveniet rem
-                    assumenda vitae ullam totam mollitia!
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center justify-end w-full">
-                <div className="w-1/2 bg-white text-gray-600 rounded-xl p-3">
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut
-                    autem inventore ipsum minima temporibus incidunt illo
-                    aliquid, omnis ea quas voluptatem cumque modi eveniet rem
-                    assumenda vitae ullam totam mollitia!
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center justify-end w-full">
-                <div className="w-1/2 bg-white text-gray-600 rounded-xl p-3">
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut
-                    autem inventore ipsum minima temporibus incidunt illo
-                    aliquid, omnis ea quas voluptatem cumque modi eveniet rem
-                    assumenda vitae ullam totam mollitia!
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center justify-end w-full">
-                <div className="w-1/2 bg-white text-gray-600 rounded-xl p-3">
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut
-                    autem inventore ipsum minima temporibus incidunt illo
-                    aliquid, omnis ea quas voluptatem cumque modi eveniet rem
-                    assumenda vitae ullam totam mollitia!
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center justify-end w-full">
-                <div className="w-1/2 bg-white text-gray-600 rounded-xl p-3">
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut
-                    autem inventore ipsum minima temporibus incidunt illo
-                    aliquid, omnis ea quas voluptatem cumque modi eveniet rem
-                    assumenda vitae ullam totam mollitia!
-                  </p>
-                </div>
-              </div>
+            <div
+              className="space-y-5 py-5 max-h-[80%] h-[80%] overflow-auto hide-scroll"
+              ref={divRef}
+            >
+              {chatMsg &&
+                chatMsg.map((chat: any) =>
+                  chat.Sender == userID ? (
+                    <div
+                      className="flex items-center justify-start w-full"
+                      key={chat.ID}
+                    >
+                      <div className="w-fit max-w-[50%]">
+                        <div className="bg-red-600 text-white rounded-2xl p-3">
+                          <p>{chat.Text}</p>
+                        </div>
+                        <p className="text-sm mt-3 text-gray-400">
+                          25 اسفند | 14:25
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      className="flex items-center justify-end w-full"
+                      key={chat.ID}
+                    >
+                      <div className="w-fit max-w-[50%] bg-white text-gray-600 rounded-xl p-3">
+                        <p>{chat.Text}</p>
+                      </div>
+                    </div>
+                  )
+                )}
             </div>
             <div className="h-[10%] bg-white w-full flex items-center gap-3 px-3 rounded-2xl">
               <textarea
