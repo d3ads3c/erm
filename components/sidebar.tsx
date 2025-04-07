@@ -13,6 +13,7 @@ export default function SideBar() {
   const pathname = usePathname();
   const Office = ["vacation", "imprest", "chats"];
   const hr = ["personnel", "forms"];
+  const site = ["products", "blog"];
   const [UserName, setUserName] = useState<string>("");
   const [UserTitle, setTitle] = useState<string>("");
 
@@ -288,6 +289,61 @@ export default function SideBar() {
                   انبار
                 </p>
               </Link>
+            </li>
+            <li>
+              <Collapsible>
+                <CollapsibleTrigger className="w-full">
+                  <div
+                    className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                      site.some((element) => pathname.includes(element))
+                        ? "bg-red-500"
+                        : "hover:bg-gray-100"
+                    }`}
+                  >
+                    <div
+                      className={`size-10 flex items-center justify-center rounded-xl ${
+                        site.some((element) => pathname.includes(element))
+                          ? "bg-red-100"
+                          : "bg-gray-100"
+                      }`}
+                    >
+                      <i className="fi fi-sr-users-alt mt-2 text-red-500"></i>
+                    </div>
+                    <p
+                      className={`${
+                        site.some((element) => pathname.includes(element))
+                          ? "text-white"
+                          : "text-gray-500"
+                      }
+                  `}
+                    >
+                      مدیریت سایت
+                    </p>
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="border-r p-2.5 mt-2 mr-5">
+                  <Link
+                    href={"/site/products"}
+                    className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                      pathname.includes("/site/products")
+                        ? "bg-red-100 text-red-500"
+                        : "hover:bg-gray-100"
+                    }`}
+                  >
+                    <p>محصولات</p>
+                  </Link>
+                  <Link
+                    href={"/site/blog"}
+                    className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${
+                      pathname.includes("/site/blog")
+                        ? "bg-red-100 text-red-500"
+                        : "hover:bg-gray-100"
+                    }`}
+                  >
+                    <p>بلاگ</p>
+                  </Link>
+                </CollapsibleContent>
+              </Collapsible>
             </li>
             <li>
               <Link
