@@ -240,56 +240,51 @@ export default function PersonnelList() {
     };
   };
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 p-3 xl:p-0">
       <div className="flex items-center justify-between">
-        <h2>لیست پرسنل ها</h2>
-        <div className="gap-3 flex items-center">
+        <h2 className="text-xs xl:text-base w-1/3">لیست پرسنل ها</h2>
+        <div className="gap-3 items-center overflow-auto max-w-[1/3] hide-scroll hidden xl:flex">
           <button
-            className={`${
-              statusFilter === "all"
-                ? "bg-emerald-400 text-white"
-                : "bg-gray-100 text-gray-400"
-            } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm`}
+            className={`${statusFilter === "all"
+              ? "bg-emerald-400 text-white"
+              : "bg-gray-100 text-gray-400"
+              } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm min-w-fit`}
             onClick={() => setStatusFilter("all")}
           >
             همه
           </button>
           <button
-            className={`${
-              statusFilter === "active"
-                ? "bg-emerald-400 text-white"
-                : "bg-gray-100 text-gray-400"
-            } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm`}
+            className={`${statusFilter === "active"
+              ? "bg-emerald-400 text-white"
+              : "bg-gray-100 text-gray-400"
+              } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm min-w-fit`}
             onClick={() => setStatusFilter("active")}
           >
             فعال
           </button>
           <button
-            className={`${
-              statusFilter === "inactive"
-                ? "bg-emerald-400 text-white"
-                : "bg-gray-100 text-gray-400"
-            } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm`}
+            className={`${statusFilter === "inactive"
+              ? "bg-emerald-400 text-white"
+              : "bg-gray-100 text-gray-400"
+              } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm min-w-fit`}
             onClick={() => setStatusFilter("inactive")}
           >
             غیرفعال
           </button>
           <button
-            className={`${
-              statusFilter === "suspend"
-                ? "bg-emerald-400 text-white"
-                : "bg-gray-100 text-gray-400"
-            } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm`}
+            className={`${statusFilter === "suspend"
+              ? "bg-emerald-400 text-white"
+              : "bg-gray-100 text-gray-400"
+              } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm min-w-fit`}
             onClick={() => setStatusFilter("suspend")}
           >
             تعلیق شده
           </button>
           <button
-            className={`${
-              statusFilter === "exit"
-                ? "bg-emerald-400 text-white"
-                : "bg-gray-100 text-gray-400"
-            } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm`}
+            className={`${statusFilter === "exit"
+              ? "bg-emerald-400 text-white"
+              : "bg-gray-100 text-gray-400"
+              } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm min-w-fit`}
             onClick={() => setStatusFilter("exit")}
           >
             قطع همکاری
@@ -299,7 +294,7 @@ export default function PersonnelList() {
           <SheetTrigger className="bg-emerald-400 text-white shadow-xl shadow-emerald-200 px-7 py-3 w-fit rounded-xl">
             پرسنل جدید
           </SheetTrigger>
-          <SheetContent side={"left"} className="min-w-[500px]">
+          <SheetContent side={"left"} className="w-full xl:min-w-[500px]">
             <SheetHeader>
               <SheetTitle>ثبت پرسنل جدید</SheetTitle>
               <SheetDescription>
@@ -309,7 +304,7 @@ export default function PersonnelList() {
             </SheetHeader>
             {permisisonModal && (
               <div className="fixed top-0 left-0 w-full h-screen bg-black/30 flex items-center justify-center backdrop-blur-lg z-50">
-                <div className="w-[40%] h-[60%] bg-white shadow-xl rounded-2xl p-5">
+                <div className="xl:w-[40%] w-full h-[60%] bg-white shadow-xl rounded-2xl p-5">
                   <div className="h-[5%] w-full">
                     <h2>انتخاب سطح دسترسی کاربر</h2>
                   </div>
@@ -466,20 +461,67 @@ export default function PersonnelList() {
           </SheetContent>
         </Sheet>
       </div>
-      <div>
-        <table className="w-full table mt-3">
-          <thead className="bg-gray-100 rounded-xl text-gray-500 text-right">
+      <div className="gap-3 items-center overflow-auto max-w-[1/3] hide-scroll xl:hidden flex !mt-8">
+        <button
+          className={`${statusFilter === "all"
+            ? "bg-emerald-400 text-white"
+            : "bg-gray-100 text-gray-400"
+            } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm min-w-fit`}
+          onClick={() => setStatusFilter("all")}
+        >
+          همه
+        </button>
+        <button
+          className={`${statusFilter === "active"
+            ? "bg-emerald-400 text-white"
+            : "bg-gray-100 text-gray-400"
+            } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm min-w-fit`}
+          onClick={() => setStatusFilter("active")}
+        >
+          فعال
+        </button>
+        <button
+          className={`${statusFilter === "inactive"
+            ? "bg-emerald-400 text-white"
+            : "bg-gray-100 text-gray-400"
+            } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm min-w-fit`}
+          onClick={() => setStatusFilter("inactive")}
+        >
+          غیرفعال
+        </button>
+        <button
+          className={`${statusFilter === "suspend"
+            ? "bg-emerald-400 text-white"
+            : "bg-gray-100 text-gray-400"
+            } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm min-w-fit`}
+          onClick={() => setStatusFilter("suspend")}
+        >
+          تعلیق شده
+        </button>
+        <button
+          className={`${statusFilter === "exit"
+            ? "bg-emerald-400 text-white"
+            : "bg-gray-100 text-gray-400"
+            } border border-gray-200 rounded-xl py-2 w-fit px-5 text-sm min-w-fit`}
+          onClick={() => setStatusFilter("exit")}
+        >
+          قطع همکاری
+        </button>
+      </div>
+      <div className="w-full overflow-auto hide-scroll">
+        <table className="table-fixed mt-3 relative overflow-auto hide-scroll w-max">
+          <thead className="bg-gray-100 rounded-xl text-gray-500 text-right text-xs xl:text-base">
             <tr>
               <th className="rounded-r-xl py-3 px-5">پرسنل</th>
               <th>سرپرست / مدیر</th>
               <th>واحد</th>
-              <th>دسترسی ها</th>
+              <th className="">دسترسی ها</th>
               <th>عضویت</th>
               <th>وضعیت</th>
               <th className="rounded-l-xl py-3 px-5 text-center">عملیات</th>
             </tr>
           </thead>
-          <tbody className="text-right">
+          <tbody className="text-right text-xs xl:text-base">
             {filteredPersonnels?.map((user: any, index: number) => (
               <tr className="border-b" key={index}>
                 <td className="py-5 px-5">
@@ -501,7 +543,7 @@ export default function PersonnelList() {
                 </td>
                 <td>{user.Manager}</td>
                 <td>{user.Departman}</td>
-                <td>
+                <td className="">
                   <div className="flex flex-wrap max-w-[400px] my-3 items-center gap-3">
                     {Array.isArray(user.Permission) ? (
                       user.Permission.map((id: number, index: number) => {
@@ -538,7 +580,7 @@ export default function PersonnelList() {
 
                 <td>
                   {user.Status == "active" ? (
-                    <div className="rounded-lg py-1 px-2 bg-emerald-100 text-emerald-500 w-fit text-sm flex items-center gap-1 justify-center">
+                    <div className="rounded-lg py-1 px-2 bg-emerald-100 text-emerald-500 w-fit xl:text-sm flex items-center gap-1 justify-center text-xs">
                       <span className="relative flex size-2.5">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                         <span className="relative inline-flex size-2.5 rounded-full bg-emerald-400"></span>
@@ -546,7 +588,7 @@ export default function PersonnelList() {
                       <p>فعال</p>
                     </div>
                   ) : user.Status == "exit" ? (
-                    <div className="rounded-lg py-1 px-2 bg-red-100 text-red-500 w-fit text-sm flex items-center gap-1 justify-center">
+                    <div className="rounded-lg py-1 px-2 bg-red-100 text-red-500 w-fit xl:text-sm flex items-center gap-1 justify-center text-xs">
                       <span className="relative flex size-2.5">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
                         <span className="relative inline-flex size-2.5 rounded-full bg-red-400"></span>
@@ -555,7 +597,7 @@ export default function PersonnelList() {
                     </div>
                   ) : (
                     user.Status == "suspend" && (
-                      <div className="rounded-lg py-1 px-2 bg-orange-100 text-orange-500 w-fit text-sm flex items-center gap-1 justify-center">
+                      <div className="rounded-lg py-1 px-2 bg-orange-100 text-orange-500 w-fit xl:text-sm flex items-center gap-1 justify-center text-xs">
                         <span className="relative flex size-2.5">
                           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75"></span>
                           <span className="relative inline-flex size-2.5 rounded-full bg-orange-400"></span>

@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     formData.append("Country", country);
 
     // Forward the data to another address
-    const response = await fetch('http://192.168.1.139:8000/aftersale/categories/new/product', {
+    const response = await fetch('http://192.168.1.162:8000/aftersale/categories/new/product', {
         method: 'POST',
         headers: {
             'Authorization': myCookie?.value || "No Cookie"

@@ -14,11 +14,11 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="xl:flex">
+    <div className="xl:flex pb-20 xl:pb-0">
       <div className="xl:w-1/6">
         <SideBar />
       </div>
-      <div className="xl:w-5/6 px-5 py-3 space-y-4 bg-white dark:bg-black">
+      <div className="xl:w-5/6 xl:px-5 lx:py-3 xl:space-y-4 bg-white dark:bg-black">
         <HeadBar />
         {children}
       </div>

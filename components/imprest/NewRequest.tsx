@@ -121,7 +121,7 @@ export default function ImprestReq() {
           <SheetTrigger className="bg-emerald-400 text-white shadow-xl shadow-emerald-200 px-7 py-3 w-fit rounded-xl">
             مساعده جدید
           </SheetTrigger>
-          <SheetContent side={"left"} className="min-w-[500px]">
+          <SheetContent side={"left"} className="min-w-full xl:min-w-[500px]">
             <SheetHeader>
               <SheetTitle>درخواست مساعده جدید</SheetTitle>
             </SheetHeader>
@@ -165,7 +165,7 @@ export default function ImprestReq() {
         </Sheet>
       </div>
       {myImprest !== null && (
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
           {myImprest.map((imprest: MyImprest, index: number) => (
             <div className="w-full" key={index}>
               <div className="border rounded-2xl p-3 space-y-3">

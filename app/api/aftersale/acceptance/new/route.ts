@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     formData.append("technicianNotes", info.technicianNotes);
 
     // Forward the data to another address
-    const response = await fetch('http://192.168.1.139:8000/aftersale/acceptance/new', {
+    const response = await fetch('http://192.168.1.162:8000/aftersale/acceptance/new', {
         method: 'POST',
         headers: {
             'Authorization': myCookie?.value || "No Cookie"

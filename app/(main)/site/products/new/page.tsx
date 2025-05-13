@@ -21,8 +21,6 @@ interface Data {
   enName: string;
   shortDesc: string;
   Link: string;
-  Category: string;
-  mainimg: File | null;
   attr: Row[];
   flag: boolean;
 }
@@ -32,14 +30,13 @@ export default function NewSiteProduct() {
   const [category, setCategory] = useState("");
   const [rows, setRows] = useState<Row[]>([]);
   const [counter, setCounter] = useState(0);
+  const [flag, setFlag] = useState(false);
 
   const [values, setValues] = useState<Data>({
     faName: "",
     enName: "",
     shortDesc: "",
     Link: "",
-    Category: "",
-    mainimg: null,
     attr: [],
     flag: false,
   });
@@ -88,11 +85,33 @@ export default function NewSiteProduct() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setValues((prevFormValues) => ({
-      ...prevFormValues,
-      Category: category,
-    }));
-    console.log(values);
+    var Flag = "false";
+    if (flag) {
+      Flag = "ture";
+    } else {
+      Flag = "false";
+    }
+    const formData = new FormData();
+    formData.append("faName", values.faName);
+    formData.append("enName", values.enName);
+    formData.append("Link", values.Link);
+    formData.append("Category", category);
+    formData.append("flag", Flag);
+    formData.append("shortDesc", values.shortDesc);
+    formData.append("attr", JSON.stringify(values.attr));
+
+    if (selectedImage) {
+      formData.append("mainimg", selectedImage);
+    }
+
+    fetch("/api/site/products/new", { method: "POST", body: formData })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -114,6 +133,7 @@ export default function NewSiteProduct() {
                     name="faName"
                     id="faName"
                     onChange={InputChange}
+                    value={values.faName}
                     className="border rounded-xl p-3 border-gray-200 w-full mt-1.5"
                   />
                 </div>
@@ -124,6 +144,7 @@ export default function NewSiteProduct() {
                     name="enName"
                     onChange={InputChange}
                     id="enName"
+                    value={values.enName}
                     className="border rounded-xl p-3 border-gray-200 w-full mt-1.5"
                   />
                 </div>
@@ -135,6 +156,7 @@ export default function NewSiteProduct() {
                   type="text"
                   name="Link"
                   id="Link"
+                  value={values.Link}
                   onChange={InputChange}
                   className="border rounded-xl p-3 border-gray-200 w-full mt-1.5"
                 />
@@ -145,6 +167,7 @@ export default function NewSiteProduct() {
                   name="shortDesc"
                   onChange={InputChange}
                   id="shortDesc"
+                  value={values.shortDesc}
                   className="border rounded-xl p-3 border-gray-200 w-full mt-1.5"
                 ></textarea>
               </div>
@@ -279,7 +302,11 @@ export default function NewSiteProduct() {
                 </Select>
               </div>
               <div className="items-center flex gap-2">
-                <Checkbox id="BestProduct" />
+                <Checkbox
+                  id="BestProduct"
+                  checked={flag}
+                  onCheckedChange={() => setFlag(true)}
+                />
                 <div className="grid gap-1.5 leading-none">
                   <label
                     htmlFor="BestProduct"

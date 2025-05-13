@@ -1,6 +1,6 @@
 export default function CompanyInfo() {
   return (
-    <div className="border rounded-xl p-5 bg-white dark:bg-[#121212]">
+    <div className="border rounded-xl p-5 bg-white dark:bg-[#121212] hidden xl:block">
       <div>
         <h1 className="font-bold">اطلاعات شرکت</h1>
       </div>

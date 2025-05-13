@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     formData.append("Price", price.replaceAll(",",""));
 
     // Forward the data to another address
-    const response = await fetch('http://192.168.1.139:8000/aftersale/categories/new/fee', {
+    const response = await fetch('http://192.168.1.162:8000/aftersale/categories/new/fee', {
         method: 'POST',
         headers: {
             'Authorization': myCookie?.value || "No Cookie"

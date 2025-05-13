@@ -5,7 +5,7 @@ export default function RequestTab() {
   return (
     <Tabs
       defaultValue="vacation"
-      className="w-full border rounded-xl p-5 max-h-[400px] h-[400px] bg-white dark:bg-[#121212]"
+      className="w-full border rounded-xl p-3 xl:p-5 max-h-[400px] h-[400px] bg-white dark:bg-[#121212]"
       dir="rtl"
     >
       <div className="mb-3">

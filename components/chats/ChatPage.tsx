@@ -99,8 +99,8 @@ export default function ChatPage() {
   }, [selectedChat]);
 
   return (
-    <div className="flex gap-2 chat_page">
-      <div className="w-1/4">
+    <div className="xl:flex gap-2 chat_page p-3">
+      <div className="w-xl:1/4 w-full">
         <div>
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -198,6 +198,9 @@ export default function ChatPage() {
                           {chat.Reciver}
                         </h2>
                         <div>
+                          <div className="size-5 text-xs bg-red-600 text-white rounded-full flex items-center justify-center">
+                            <p>2</p>
+                          </div>
                           <p className="text-xs text-gray-400">14:47</p>
                         </div>
                       </div>
@@ -208,44 +211,20 @@ export default function ChatPage() {
                   </div>
                 </div>
               ))}
-            <div className="p-3 rounded-xl hover:bg-gray-100 duration-150">
-              <div className="flex items-center gap-3">
-                <div className="size-14 rounded-full bg-gray-100">
-                  <Image
-                    src={"/img/default-user-icon.jpg"}
-                    width={56}
-                    height={56}
-                    className="rounded-full"
-                    alt="msg user Image"
-                  ></Image>
-                </div>
-                <div className="w-3/4">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-sx text-gray-600">نیما نیک عمل</h2>
-                    <div className="size-5 text-xs bg-red-600 text-white rounded-full flex items-center justify-center">
-                      <p>2</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-400 w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                    با سلام و احترام خدمت همکاران محترم جهت بهره مندی از قابلیت
-                    های جدید نرم افزار مدیریت کسب و کار نسخه خود را به روز رسانی
-                    کنید.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
       {selectedChat && (
-        <div className="w-3/4 min-h-full bg-gray-100 rounded-2xl">
+        <div className="xl:w-3/4 fixed top-0 right-0 h-screen xl:block w-full min-h-full bg-gray-100 xlrounded-2xl">
           <div className="p-3 h-full">
             <div className="bg-white rounded-2xl p-5 flex items-center justify-between h-[10%]">
               <div>
                 <h2 className="text-sm text-gray-600">{}</h2>
                 <p className="text-emerald-400 text-xs">آنلاین</p>
               </div>
-              <div></div>
+              <div>
+                <button type="button" onClick={() => setSelectedChat(null)}><i className="fi fi-sr-angle-small-left"></i></button>
+              </div>
             </div>
             {/* MSG */}
             <div
@@ -292,9 +271,9 @@ export default function ChatPage() {
               <button
                 type="button"
                 onClick={SendChat}
-                className="size-10 rounded-full bg-red-600 text-white flex items-center justify-center hover:shadow-xl hover:shadow-red-200 duration-150"
+                className="size-10 min-w-[40px] rounded-full bg-red-600 text-white flex items-center justify-center hover:shadow-xl hover:shadow-red-200 duration-150"
               >
-                <i className="fi fi-sr-paper-plane mt-2"></i>
+                <i className="fi fi-sr-paper-plane mt-2.5"></i>
               </button>
             </div>
           </div>

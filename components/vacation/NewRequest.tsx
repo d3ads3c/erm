@@ -86,7 +86,7 @@ export default function VacationReq() {
           <SheetTrigger className="bg-emerald-400 text-white shadow-xl shadow-emerald-200 px-7 py-3 w-fit rounded-xl">
             مرخصی جدید
           </SheetTrigger>
-          <SheetContent side={"left"} className="min-w-[500px]">
+          <SheetContent side={"left"} className="min-w-full xl:min-w-[500px]">
             <SheetHeader>
               <SheetTitle>درخواست مرخصی جدید</SheetTitle>
               <SheetDescription>
@@ -149,7 +149,7 @@ export default function VacationReq() {
         </Sheet>
       </div>
       {myVacations && (
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
           {myVacations.map((off: any, index: number) => (
             <div className="w-full" key={index}>
               <div className="border rounded-2xl p-3 space-y-3">
