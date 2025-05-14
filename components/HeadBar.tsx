@@ -1,9 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import { requestNotificationPermission, checkNotificationPermission } from "@/src/utils/firebaseConfig";
 
 export default function HeadBar() {
   const [UserName, setUserName] = useState<string>("");
+  const [notificationEnabled, setNotificationEnabled] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -15,7 +26,25 @@ export default function HeadBar() {
         console.log("No user data found in localStorage");
       }
     }
+
+    // Check if notifications are already enabled
+    const checkNotifications = async () => {
+      const hasPermission = await checkNotificationPermission();
+      setNotificationEnabled(hasPermission);
+    };
+
+    checkNotifications();
   }, []);
+
+  const handleEnableNotifications = async () => {
+    const token = await requestNotificationPermission();
+    if (token) {
+      setNotificationEnabled(true);
+      alert("Notifications have been enabled!");
+    } else {
+      alert("Failed to enable notifications. Please check your browser settings.");
+    }
+  };
 
   return (
     <>
@@ -37,9 +66,14 @@ export default function HeadBar() {
       <div className="p-5 bg-red-600 rounded-b-[30px] xl:hidden">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-
             <div>
-              <Image src={"/img/default-user-icon.jpg"} width={1000} height={1000} alt="User Image" className="max-w-[60px] rounded-2xl"></Image>
+              <Image
+                src={"/img/default-user-icon.jpg"}
+                width={1000}
+                height={1000}
+                alt="User Image"
+                className="max-w-[60px] rounded-2xl"
+              ></Image>
             </div>
             <div>
               <p className="text-xs text-white">خوش آمدید</p>
@@ -51,7 +85,32 @@ export default function HeadBar() {
           </div>
         </div>
       </div>
+      <Drawer defaultOpen={true}>
+        <DrawerContent className="max-h-[600px] max-w-[30%] mx-auto p-10" dir="rtl">
+          <DrawerHeader className="text-right">
+            <DrawerTitle>منو</DrawerTitle>
+            <DrawerDescription>دسترسی به قابلیت های برنامه</DrawerDescription>
+          </DrawerHeader>
+          <div className="max-h-[600px] overflow-auto">
+            {!notificationEnabled ? (
+              <button
+                type="button"
+                className="w-full rounded-xl bg-red-500 text-white py-3"
+                onClick={handleEnableNotifications}
+              >
+                Enable Notifications
+              </button>
+            ) : (
+              <p className="text-green-500 text-center">Notifications are already enabled!</p>
+            )}
+          </div>
+          <DrawerFooter>
+            <DrawerClose>
+              <i className="fi fi-sr-cross-small"></i>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </>
-
   );
 }

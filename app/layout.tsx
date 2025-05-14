@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import ServiceWorkerRegister from "./ServiceWorkerRegister";
 import "./globals.css";
 
 const bakh = localFont({
@@ -38,9 +39,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="fa" dir="rtl" className="">
       <body className={`${bakh.className} antialiased`}>
+        <ServiceWorkerRegister/>
         {children}
       </body>
     </html>
