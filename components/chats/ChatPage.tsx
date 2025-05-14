@@ -215,7 +215,7 @@ export default function ChatPage() {
         </div>
       </div>
       {selectedChat && (
-        <div className="xl:w-3/4 fixed top-0 right-0 h-screen xl:block w-full min-h-full bg-gray-100 xlrounded-2xl">
+        <div className="xl:w-3/4 fixed top-0 right-0 h-screen xl:block w-full min-h-full bg-gray-100 xlrounded-2xl z-40">
           <div className="p-3 h-full">
             <div className="bg-white rounded-2xl p-5 flex items-center justify-between h-[10%]">
               <div>
