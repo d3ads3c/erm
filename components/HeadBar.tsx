@@ -10,41 +10,41 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { requestNotificationPermission, checkNotificationPermission } from "@/src/utils/firebaseConfig";
+// import { requestNotificationPermission, checkNotificationPermission } from "@/src/utils/firebaseConfig";
 
 export default function HeadBar() {
   const [UserName, setUserName] = useState<string>("");
   const [notificationEnabled, setNotificationEnabled] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const LocalData = localStorage.getItem("UserInfo");
-      if (LocalData) {
-        const userName = JSON.parse(LocalData);
-        setUserName(userName.Fname);
-      } else {
-        console.log("No user data found in localStorage");
-      }
-    }
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const LocalData = localStorage.getItem("UserInfo");
+  //     if (LocalData) {
+  //       const userName = JSON.parse(LocalData);
+  //       setUserName(userName.Fname);
+  //     } else {
+  //       console.log("No user data found in localStorage");
+  //     }
+  //   }
 
-    // Check if notifications are already enabled
-    const checkNotifications = async () => {
-      const hasPermission = await checkNotificationPermission();
-      setNotificationEnabled(hasPermission);
-    };
+  //   // Check if notifications are already enabled
+  //   const checkNotifications = async () => {
+  //     const hasPermission = await checkNotificationPermission();
+  //     setNotificationEnabled(hasPermission);
+  //   };
 
-    checkNotifications();
-  }, []);
+  //   checkNotifications();
+  // }, []);
 
-  const handleEnableNotifications = async () => {
-    const token = await requestNotificationPermission();
-    if (token) {
-      setNotificationEnabled(true);
-      alert("Notifications have been enabled!");
-    } else {
-      alert("Failed to enable notifications. Please check your browser settings.");
-    }
-  };
+  // const handleEnableNotifications = async () => {
+  //   const token = await requestNotificationPermission();
+  //   if (token) {
+  //     setNotificationEnabled(true);
+  //     alert("Notifications have been enabled!");
+  //   } else {
+  //     alert("Failed to enable notifications. Please check your browser settings.");
+  //   }
+  // };
 
   return (
     <>
@@ -85,7 +85,7 @@ export default function HeadBar() {
           </div>
         </div>
       </div>
-      <Drawer defaultOpen={true}>
+      {/* <Drawer defaultOpen={true}>
         <DrawerContent className="max-h-[600px] max-w-[30%] mx-auto p-10" dir="rtl">
           <DrawerHeader className="text-right">
             <DrawerTitle>منو</DrawerTitle>
@@ -110,7 +110,7 @@ export default function HeadBar() {
             </DrawerClose>
           </DrawerFooter>
         </DrawerContent>
-      </Drawer>
+      </Drawer> */}
     </>
   );
 }

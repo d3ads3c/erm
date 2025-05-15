@@ -90,7 +90,7 @@ export default function CompanyCom() {
           </p>
         </div>
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-4 gap-5 mt-5">
+          <div className="grid grid-cols-2 xl:grid-cols-4 gap-5 mt-5">
             <div className="w-full">
               <p className="text-sm mb-1">نام شرکت</p>
               <input
@@ -157,6 +157,7 @@ export default function CompanyCom() {
             <textarea
               name="Address"
               value={CompValue.Address}
+              rows={5}
               onChange={handleInputChange}
               className="border border-gray-300 p-2 w-full rounded-lg focus:outline-none"
             ></textarea>
@@ -165,9 +166,8 @@ export default function CompanyCom() {
             <button
               type="submit"
               disabled={!isChanged}
-              className={`bg-emerald-400 text-white w-fit py-2 px-5 rounded-xl duration-150 ${
-                !isChanged && "opacity-50 cursor-not-allowed"
-              }`}
+              className={`bg-emerald-400 text-white w-fit py-2 px-5 rounded-xl duration-150 ${!isChanged && "opacity-50 cursor-not-allowed"
+                }`}
             >
               ثبت مشخصات
             </button>

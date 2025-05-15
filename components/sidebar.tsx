@@ -404,23 +404,29 @@ export default function SideBar() {
       <div className="fixed bottom-2 py-2 px-5 right-0 w-full xl:hidden z-30">
         <div className="w-full rounded-full backdrop-blur-xl bg-white/30 mx-auto py-2 flex items-center justify-between shadow-xl">
           <Link href={"/dashboard"} className="w-1/4 text-center">
-            <div className="size-10 rounded-full flex items-center justify-center bg-red-500 text-white mx-auto mb-1">
+            <div className={`size-10 rounded-full flex items-center justify-center mx-auto mb-1 ${pathname.includes("/dashboard") && "bg-red-500 text-white"}`}>
               <i className="fi fi-sr-dashboard-panel mt-2.5 text-xl"></i>
             </div>
-            <p className="text-xs text-red-500">داشبورد</p>
+            <p className={`text-xs ${pathname.includes("/dashboard") && "text-red-500"}`}>داشبورد</p>
           </Link>
           <Link href={"/requests"} className="w-1/4 text-center">
-            <i className="fi fi-sr-file-edit mt-2.5 text-xl"></i>
-            <p className="text-xs">درخواست</p>
+            <div className={`size-10 rounded-full flex items-center justify-center mx-auto mb-1 ${pathname.includes("/requests") && "bg-red-500 text-white"}`}>
+              <i className="fi fi-sr-file-edit mt-2.5 text-xl ml-1"></i>
+            </div>
+            <p className={`text-xs ${pathname.includes("/requests") && "text-red-500"}`}>درخواست</p>
           </Link>
           <Link href={"/chats"} className="w-1/4 text-center">
-            <i className="fi fi-sr-comments mt-2.5 text-xl"></i>
-            <p className="text-xs">مکاتبات</p>
+            <div className={`size-10 rounded-full flex items-center justify-center mx-auto mb-1 ${pathname.includes("/chats") && "bg-red-500 text-white"}`}>
+              <i className="fi fi-sr-comments mt-2.5 text-xl"></i>
+            </div>
+            <p className={`text-xs ${pathname.includes("/chats") && "text-red-500"}`}>مکاتبات</p>
           </Link>
           <Drawer>
             <DrawerTrigger className="w-1/4 text-center">
-              <i className="fi fi-sr-apps mt-2.5 text-xl"></i>
-              <p className="text-xs">منو</p>
+              <div className={`size-10 rounded-full flex items-center justify-center mx-auto mb-1`}>
+                <i className="fi fi-sr-apps mt-2.5 text-xl"></i>
+              </div>
+              <p className={`text-xs`}>منو</p>
             </DrawerTrigger>
             <DrawerContent className="max-h-[600px]">
               <DrawerHeader className="text-right">
@@ -451,7 +457,7 @@ export default function SideBar() {
                   </div>
                   <div className="grid grid-cols-4 gap-5">
                     <div className="w-full my-3">
-                      <Link href={"/personnel"} className="text-center space-y-2">
+                      <Link href={"/settings"} className="text-center space-y-2">
                         <div
                           className={`size-12 flex items-center text-lg justify-center rounded-2xl bg-red-100 mx-auto`}
                         >
@@ -461,7 +467,7 @@ export default function SideBar() {
                       </Link>
                     </div>
                     <div className="w-full my-3">
-                      <Link href={"/personnel"} className="text-center space-y-2">
+                      <Link href={"/settings/departmans"} className="text-center space-y-2">
                         <div
                           className={`size-12 flex items-center text-lg justify-center rounded-2xl bg-red-100 mx-auto`}
                         >
@@ -491,7 +497,7 @@ export default function SideBar() {
                       </Link>
                     </div>
                     <div className="w-full my-3">
-                      <Link href={"/personnel"} className="text-center space-y-2">
+                      <Link href={"/settings/versions"} className="text-center space-y-2">
                         <div
                           className={`size-12 flex items-center text-lg justify-center rounded-2xl bg-red-100 mx-auto`}
                         >

@@ -10,8 +10,8 @@ export default function ProfileTemplate({
   const pathname = usePathname();
 
   return (
-    <div>
-      <div className="flex items-center gap-5 mb-5">
+    <div className="p-3 xl:p-0">
+      <div className="xl:flex items-center gap-5 mb-5 hidden">
         <Link
           href={"/settings"}
           className={`${
