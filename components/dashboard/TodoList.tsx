@@ -29,7 +29,7 @@ export default function TodoList() {
                 />
                 <button onClick={handleAdd}>Add</button>
             </div>
-            <ul className="mt-5">
+            <ul className="mt-5 max-h-[350px] overflow-auto">
                 {todos.map((todo, idx) => (
                     <li key={idx} className="bg-gray-100 rounded-xl p-3">
                         {todo}

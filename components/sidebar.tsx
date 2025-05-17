@@ -206,7 +206,7 @@ export default function SideBar() {
                   </CollapsibleContent>
                 </Collapsible>
               </li>
-              <li>
+              {/* <li>
                 <Collapsible>
                   <CollapsibleTrigger className="w-full">
                     <div className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100">
@@ -237,7 +237,7 @@ export default function SideBar() {
                     </Link>
                   </CollapsibleContent>
                 </Collapsible>
-              </li>
+              </li> */}
               {/* <li>
               <Link
                 href={"#"}
@@ -249,7 +249,7 @@ export default function SideBar() {
                 <p>پروژه ها</p>
               </Link>
             </li> */}
-              <li>
+              {/* <li>
                 <Link
                   href={"/aftersale"}
                   className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100"
@@ -259,8 +259,8 @@ export default function SideBar() {
                   </div>
                   <p>خدمات پس از فروش</p>
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link
                   href={"/warehouse"}
                   className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${pathname.includes("/warehouse")
@@ -286,7 +286,7 @@ export default function SideBar() {
                     انبار
                   </p>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Collapsible>
                   <CollapsibleTrigger className="w-full">
@@ -325,7 +325,7 @@ export default function SideBar() {
                     >
                       <p>محصولات</p>
                     </Link>
-                    <Link
+                    {/* <Link
                       href={"/site/blog"}
                       className={`flex items-center gap-2 p-2 rounded-xl text-gray-500 ${pathname.includes("/site/blog")
                         ? "bg-red-100 text-red-500"
@@ -333,7 +333,7 @@ export default function SideBar() {
                         }`}
                     >
                       <p>بلاگ</p>
-                    </Link>
+                    </Link> */}
                   </CollapsibleContent>
                 </Collapsible>
               </li>

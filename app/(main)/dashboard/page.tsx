@@ -8,14 +8,14 @@ export default function Home() {
     <div className="space-y-5 p-3 xl:p-0">
       <CompanyInfo />
       <div>
-        <TodoList />
+        {/* <TodoList /> */}
       </div>
       <div className="w-full gap-5 xl:flex space-y-5 xl:space-y-0">
         <div className="xl:w-2/6">
           <RequestTab />
         </div>
         <div className="xl:w-4/6">
-          <Tasks />
+          {/* <Tasks /> */}
         </div>
       </div>
     </div>

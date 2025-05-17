@@ -16,6 +16,8 @@ export default function LoginPage() {
   const router = useRouter();
   const [inputValue, setInputValue] = useState<string>("");
   const [numbers, setNumbers] = useState<string[]>([]);
+  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState("")
   const [step, setStep] = useState<string>("number");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -62,10 +64,34 @@ export default function LoginPage() {
       });
   };
 
+  const LoginPassword = async () => {
+    setLoading(true)
+    await fetch("/api/login/username", {
+      method: "POST",
+      body: JSON.stringify({ Username: username, Password: password })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.msg == "LoggedIn") {
+          localStorage.setItem(`UserInfo`, JSON.stringify(data));
+          router.push("/dashboard");
+        } else if (data.msg == "otp set") {
+          setLoading(false);
+          setStep("otp");
+        } else if (data.msg == "invalid") {
+          setLoading(false);
+          toast({
+            variant: "destructive",
+            description: "کد ورود اشتباه است!",
+          });
+        }
+      })
+  }
+
   return (
     <div className="w-full h-screen flex items-center justify-center xl:bg-gray-50">
       <LoadingScreen show={loading} />
-      <div className="bg-white xl:shadow-2xl backdrop-blur-xl rounded-3xl py-20 xl:w-[35%] h-fit space-y-5 xl:px-20 w-full px-10">
+      <div className="bg-white xl:shadow-xl backdrop-blur-xl rounded-[35px] py-20 xl:w-[35%] h-fit space-y-5 xl:px-20 w-full px-10">
         <div className="w-full">
           <Image
             src={"/img/logo/arman-ops.png"}
@@ -78,7 +104,7 @@ export default function LoginPage() {
         <div>
           <h1>ورود به پنل</h1>
         </div>
-        <div>
+        {/* <div>
           {step == "number" ? (
             <>
               <p>شماره همراه</p>
@@ -127,19 +153,48 @@ export default function LoginPage() {
               </div>
             )
           )}
+        </div> */}
+        <div className="space-y-5">
+          <div>
+            <p>شماره همراه</p>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="border border-gray-300 p-2 w-full rounded-xl focus:outline-none mt-1"
+            />
+          </div>
+          <div>
+            <p>رمز عبور</p>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border border-gray-300 p-2 w-full rounded-xl focus:outline-none mt-1"
+            />
+          </div>
         </div>
         <div>
-          <button
+          {/* <button
             type="button"
             onClick={() => (sendOTP(), setLoading(true))}
-            className={`py-3 w-full rounded-xl active:scale-95 duration-150 ${
-              inputValue.trim().length !== 11
-                ? "bg-gray-100 text-gray-300 cursor-not-allowed"
-                : "bg-red-500 text-white shadow-xl shadow-red-200"
-            }`}
+            className={`py-3 w-full rounded-xl active:scale-95 duration-150 ${inputValue.trim().length !== 11
+              ? "bg-gray-100 text-gray-300 cursor-not-allowed"
+              : "bg-red-500 text-white shadow-xl shadow-red-200"
+              }`}
             disabled={inputValue.trim().length !== 11}
           >
             ادامه
+          </button> */}
+          <button
+            type="button"
+            onClick={LoginPassword}
+            className={`py-3 w-full rounded-xl active:scale-95 duration-150 ${!username && !password
+              ? "bg-gray-100 text-gray-300 cursor-not-allowed"
+              : "bg-red-500 text-white shadow-xl shadow-red-200"
+              }`}
+          >
+            ورود
           </button>
         </div>
       </div>

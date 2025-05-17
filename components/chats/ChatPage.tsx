@@ -100,7 +100,7 @@ export default function ChatPage() {
 
   return (
     <div className="xl:flex gap-2 chat_page p-3">
-      <div className="w-xl:1/4 w-full">
+      <div className="xl:w-1/4 w-full">
         <div>
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -214,71 +214,77 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
-      {selectedChat && (
-        <div className="xl:w-3/4 fixed top-0 right-0 h-screen xl:block w-full min-h-full bg-gray-100 xlrounded-2xl z-40">
-          <div className="p-3 h-full">
-            <div className="bg-white rounded-2xl p-5 flex items-center justify-between h-[10%]">
-              <div>
-                <h2 className="text-sm text-gray-600">{}</h2>
-                <p className="text-emerald-400 text-xs">آنلاین</p>
-              </div>
-              <div>
-                <button type="button" onClick={() => setSelectedChat(null)}><i className="fi fi-sr-angle-small-left"></i></button>
-              </div>
+
+      <div
+        className={
+          `xl:w-3/4 top-0 right-0 h-screen xl:h-[calc(100vh-200px)] w-full bg-gray-100 xl:rounded-2xl z-40 ` +
+          (selectedChat
+            ? "fixed xl:static xl:block"
+            : "hidden xl:block")
+        }
+      >
+        <div className="p-3 h-full">
+          <div className="bg-white rounded-2xl p-5 flex items-center justify-between h-[10%]">
+            <div>
+              <h2 className="text-sm text-gray-600">{ }</h2>
+              <p className="text-emerald-400 text-xs">آنلاین</p>
             </div>
-            {/* MSG */}
-            <div
-              className="space-y-5 py-5 max-h-[80%] h-[80%] overflow-auto hide-scroll"
-              ref={divRef}
-            >
-              {chatMsg &&
-                chatMsg.map((chat: any) =>
-                  chat.Sender == userID ? (
-                    <div
-                      className="flex items-center justify-start w-full"
-                      key={chat.ID}
-                    >
-                      <div className="w-fit max-w-[50%]">
-                        <div className="bg-red-600 text-white rounded-2xl p-3">
-                          <p>{chat.Text}</p>
-                        </div>
-                        <p className="text-sm mt-3 text-gray-400">
-                          25 اسفند | 14:25
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      className="flex items-center justify-end w-full"
-                      key={chat.ID}
-                    >
-                      <div className="w-fit max-w-[50%] bg-white text-gray-600 rounded-xl p-3">
-                        <p>{chat.Text}</p>
-                      </div>
-                    </div>
-                  )
-                )}
-            </div>
-            <div className="h-[10%] bg-white w-full flex items-center gap-3 px-3 rounded-2xl">
-              <textarea
-                value={text}
-                onChange={(value) => setText(value.target.value)}
-                rows={1}
-                cols={5}
-                placeholder="پیام شما ..."
-                className="bg-gray-100 rounded-lg p-3 text-gray-600 text-sm w-[95%] focus:outline-none resize-none"
-              ></textarea>
-              <button
-                type="button"
-                onClick={SendChat}
-                className="size-10 min-w-[40px] rounded-full bg-red-600 text-white flex items-center justify-center hover:shadow-xl hover:shadow-red-200 duration-150"
-              >
-                <i className="fi fi-sr-paper-plane mt-2.5"></i>
-              </button>
+            <div>
+              <button type="button" onClick={() => setSelectedChat(null)}><i className="fi fi-sr-angle-small-left"></i></button>
             </div>
           </div>
+          {/* MSG */}
+          <div
+            className="space-y-5 py-5 max-h-[80%] h-[80%] overflow-auto hide-scroll"
+            ref={divRef}
+          >
+            {chatMsg &&
+              chatMsg.map((chat: any) =>
+                chat.Sender == userID ? (
+                  <div
+                    className="flex items-center justify-start w-full"
+                    key={chat.ID}
+                  >
+                    <div className="w-fit max-w-[50%]">
+                      <div className="bg-red-600 text-white rounded-2xl p-3">
+                        <p>{chat.Text}</p>
+                      </div>
+                      <p className="text-sm mt-3 text-gray-400">
+                        25 اسفند | 14:25
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    className="flex items-center justify-end w-full"
+                    key={chat.ID}
+                  >
+                    <div className="w-fit max-w-[50%] bg-white text-gray-600 rounded-xl p-3">
+                      <p>{chat.Text}</p>
+                    </div>
+                  </div>
+                )
+              )}
+          </div>
+          <div className="h-[10%] bg-white w-full flex items-center gap-3 px-3 rounded-2xl">
+            <textarea
+              value={text}
+              onChange={(value) => setText(value.target.value)}
+              rows={1}
+              cols={5}
+              placeholder="پیام شما ..."
+              className="bg-gray-100 rounded-lg p-3 text-gray-600 text-sm w-[95%] focus:outline-none resize-none"
+            ></textarea>
+            <button
+              type="button"
+              onClick={SendChat}
+              className="size-10 min-w-[40px] rounded-full bg-red-600 text-white flex items-center justify-center hover:shadow-xl hover:shadow-red-200 duration-150"
+            >
+              <i className="fi fi-sr-paper-plane mt-2.5"></i>
+            </button>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
