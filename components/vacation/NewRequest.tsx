@@ -27,6 +27,16 @@ interface NewVacation {
   enddate: string;
 }
 
+interface VacationProp {
+  ID: number
+  FullName: string
+  CEO: string
+  Type: string
+  Sdate: string
+  Edate: string
+  Status: string
+}
+
 export default function VacationReq() {
   const { toast } = useToast();
   const [StartDate, setStartDate] = useState(moment());
@@ -34,18 +44,29 @@ export default function VacationReq() {
   const [Vacation, setVacation] = useState<NewVacation | null>(null);
   const [VacationType, setVacationType] = useState<string>("");
   const [myVacations, setMyVacations] = useState<[] | null>(null);
+  const [pendings, setPendings] = useState<VacationProp[] | null>(null)
 
   const GetVacations = async () => {
     await fetch("/api/vacation/list")
       .then((res) => res.json())
       .then((data) => {
         setMyVacations(data);
-        console.log(data);
       });
   };
 
+  const PendingVacations = async () => {
+    await fetch('/api/vacation/pending')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.length) {
+          setPendings(data);
+        }
+      });
+  }
+
   useEffect(() => {
     GetVacations();
+    PendingVacations();
   }, []);
 
   const handleSave = () => {
@@ -77,7 +98,17 @@ export default function VacationReq() {
         }
       });
   };
+  const AcceptVacation = async (ID: number) => {
+    await fetch("/api/vacation/accept", {
+      method: "POST",
+      body: JSON.stringify({ ID: ID })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+      })
 
+  }
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -148,6 +179,106 @@ export default function VacationReq() {
           </SheetContent>
         </Sheet>
       </div>
+      {pendings && (
+        <div>
+          <div>
+            <h2>مرخصی های در انتظار تایید</h2>
+          </div>
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-3">
+            {pendings.map((off, index) => (
+              <div className="w-full" key={index}>
+                <div className="border rounded-2xl p-3 space-y-3">
+                  <div className="flex  items-center w-full">
+                    <div className="w-1/2 flex items-center gap-3">
+                      <div className="size-12 rounded-xl bg-gray-100 dark:bg-[#212121]">
+                        <Image
+                          src={"/img/default-user-icon.jpg"}
+                          width={48}
+                          height={48}
+                          alt="User Image"
+                          className="rounded-xl"
+                        ></Image>
+                      </div>
+                      <div className="">
+                        <h3 className="text-gray-700 dark:text-white">
+                          {off.FullName}
+                        </h3>
+                      </div>
+                    </div>
+                    <div className="w-1/2 flex items-start justify-end">
+                      {off.CEO == "accepted" ? (
+                        <div className="flex items-center gap-2 bg-emerald-100 rounded-full w-fit py-1 px-3">
+                          <span className="relative flex size-2.5">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex size-2.5 rounded-full bg-emerald-400"></span>
+                          </span>
+                          <p className="text-xs text-emerald-400 mt-0.5">
+                            در انتظار تایید سرپرست
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2 bg-orange-100 rounded-full w-fit py-1 px-3">
+                          <span className="relative flex size-2.5">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75"></span>
+                            <span className="relative inline-flex size-2.5 rounded-full bg-orange-400"></span>
+                          </span>
+                          <p className="text-xs text-orange-400 mt-0.5">
+                            در انتظار تایید سرپرست
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {off.Status == "accepted" ? (
+                      <div className="w-full py-2 rounded-xl bg-emerald-100 text-emerald-500 text-center font-bold">
+                        <p>تایید شده</p>
+                      </div>
+                    ) : off.Status == "rejected" ? (
+                      <div className="w-full py-2 rounded-xl bg-red-100 text-red-500 text-center font-bold">
+                        <p>رد شده</p>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="w-3/4 py-2 rounded-xl bg-orange-100 text-orange-500 text-center font-bold">
+                          <p>در انتظار تایید</p>
+                        </div>
+                        <div className="w-1/4 h-full text-sm text-red-500 text-center">
+                          حذف درخواست
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-center gap-5 mt-1">
+                    <div className="w-1/2">
+                      <button onClick={() => AcceptVacation(off.ID)} className="text-emerald-400 text-center w-full border-emerald-400 rounded-xl border py-2 hover:bg-emerald-400 hover:text-white duration-150">
+                        <p>تایید</p>
+                      </button>
+                    </div>
+                    <div className="w-1/2">
+                      <button className="text-red-500 text-center w-full border-red-500 rounded-xl border py-2 hover:bg-red-500 hover:text-white duration-150">
+                        <p>رد</p>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="bg-gray-100 dark:bg-[#212121] text-center py-1 rounded-lg flex">
+                    <div className="w-1/2 text-xs">
+                      <p className=" text-gray-400">از تاریخ</p>
+                      <p>{off.Sdate.replaceAll("-", "/")}</p>
+                    </div>
+                    <div className="w-1/2 text-xs">
+                      <p className=" text-gray-400">تا تاریخ</p>
+                      <p>{off.Edate.replaceAll("-", "/")}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+
       {myVacations && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
           {myVacations.map((off: any, index: number) => (
@@ -172,14 +303,14 @@ export default function VacationReq() {
                     </div>
                   </div>
                   <div className="w-1/2 flex items-start justify-end">
-                    {off.CEO == "pending" ? (
+                    {off.CEO == "accepted" ? (
                       <div className="flex items-center gap-2 bg-emerald-100 rounded-full w-fit py-1 px-3">
                         <span className="relative flex size-2.5">
                           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                           <span className="relative inline-flex size-2.5 rounded-full bg-emerald-400"></span>
                         </span>
                         <p className="text-xs text-emerald-400 mt-0.5">
-                          در انتظار تایید سرپرست
+                          تایید شده توسط سرپرست
                         </p>
                       </div>
                     ) : (

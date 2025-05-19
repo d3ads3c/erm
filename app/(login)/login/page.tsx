@@ -187,7 +187,7 @@ export default function LoginPage() {
             ادامه
           </button> */}
           <button
-            type="button"
+            type="submit"
             onClick={LoginPassword}
             className={`py-3 w-full rounded-xl active:scale-95 duration-150 ${!username && !password
               ? "bg-gray-100 text-gray-300 cursor-not-allowed"
