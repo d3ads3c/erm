@@ -249,7 +249,7 @@ export default function SideBar() {
                 <p>پروژه ها</p>
               </Link>
             </li> */}
-              {/* <li>
+              <li>
                 <Link
                   href={"/aftersale"}
                   className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100"
@@ -259,7 +259,7 @@ export default function SideBar() {
                   </div>
                   <p>خدمات پس از فروش</p>
                 </Link>
-              </li> */}
+              </li>
               {/* <li>
                 <Link
                   href={"/warehouse"}

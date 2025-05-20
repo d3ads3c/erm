@@ -20,7 +20,7 @@ export default function AfterSaleTemplate({
         >
           <h2>داشبورد</h2>
         </Link>
-        <Link
+        {/* <Link
           href={"/aftersale/acceptance"}
           className={`${
             pathname.includes("/aftersale/acceptance") ? "min-w-max shadow-lg shadow-red-200 rounded-lg py-2 px-5 bg-red-500 text-white" : "min-w-max rounded-lg py-2 px-5 bg-white border border-gray-200 text-gray-700"
@@ -51,7 +51,7 @@ export default function AfterSaleTemplate({
           }`}
         >
           <h2>دسته بندی ها</h2>
-        </Link>
+        </Link> */}
         <Link
           href={"/aftersale/agents"}
           className={`${
@@ -60,14 +60,22 @@ export default function AfterSaleTemplate({
         >
           <h2>نمایندگان</h2>
         </Link>
-        <Link
+                <Link
+          href={"/aftersale/request"}
+          className={`${
+            pathname.includes("/aftersale/request") ? "min-w-max shadow-lg shadow-red-200 rounded-lg py-2 px-5 bg-red-500 text-white" : "min-w-max rounded-lg py-2 px-5 bg-white border border-gray-200 text-gray-700"
+          }`}
+        >
+          <h2>درخواست ها</h2>
+        </Link>
+        {/* <Link
           href={"/aftersale/settings"}
           className={`${
             pathname.includes("/aftersale/settings") ? "min-w-max shadow-lg shadow-red-200 rounded-lg py-2 px-5 bg-red-500 text-white" : "min-w-max rounded-lg py-2 px-5 bg-white border border-gray-200 text-gray-700"
           }`}
         >
           <h2>تنظیمات</h2>
-        </Link>
+        </Link> */}
       </div>
       {children}
     </div>
