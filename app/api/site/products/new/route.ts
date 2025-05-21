@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
         };
         console.log(data);
         // Optional: Forward the data to another server if needed
-        const response = await fetch("http://192.168.1.162:8000/site/products/new", {
+        const response = await fetch("http://localhost:8000/site/products/new", {
           method: "POST",
           body: formData,
         });

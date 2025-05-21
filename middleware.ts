@@ -30,7 +30,7 @@ export async function middleware(req: NextRequest) {
     formData.append("Token", loggedUserCookie.value);
 
     async function CheckLogin(): Promise<LoginCheckResult> {
-      const response = await fetch("http://192.168.1.162:8000/login/check", {
+      const response = await fetch("http://localhost:8000/login/check", {
         method: "POST",
         body: formData
       });

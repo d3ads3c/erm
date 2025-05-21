@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   const myCookie = cookies.get('LoggedUser');
 
   // Forward the data to another address
-  const response = await fetch('http://192.168.1.162:8000/aftersale/categories/list/product', {
+  const response = await fetch('http://localhost:8000/aftersale/categories/list/product', {
     method: 'GET',
     headers: {
         'Authorization': myCookie?.value || "No Cookie"

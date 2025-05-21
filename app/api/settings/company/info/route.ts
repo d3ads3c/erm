@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const personnels = await fetch("http://192.168.1.162:8000/settings/company").then((response) =>
+  const personnels = await fetch("http://localhost:8000/settings/company").then((response) =>
     response.json()
   );
   return NextResponse.json(personnels);

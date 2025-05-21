@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
         formData.append("Password", body.Password);
 
 
-        const response = await fetch("http://192.168.1.162:8000/login/password", {
+        const response = await fetch("http://localhost:8000/login/password", {
             method: "POST",
             body: formData,
         });

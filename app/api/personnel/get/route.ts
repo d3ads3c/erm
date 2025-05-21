@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   formData.append("UserID", ID);
 
   // Forward the data to another address
-  const response = await fetch('http://192.168.1.162:8000/personnel/get', {
+  const response = await fetch('http://localhost:8000/personnel/get', {
     method: 'POST',
     body: formData
   });

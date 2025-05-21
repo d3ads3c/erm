@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     formData.append("User", user);
 
     // Forward the data to another address
-    const response = await fetch('http://192.168.1.162:8000/chats/new', {
+    const response = await fetch('http://localhost:8000/chats/new', {
         method: 'POST',
         headers: {
             'Authorization': myCookie?.value || "No Cookie"
