@@ -16,20 +16,23 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-
+import { getUserInfo } from "@/lib/functions";
 import LoadingScreen from "./LoadingScreen";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SideBar() {
+  const [user, setUser] = useState<any>()
   const pathname = usePathname();
   const Office = ["vacation", "imprest", "chats"];
   const hr = ["personnel", "forms"];
   const site = ["products", "blog"];
   const [UserName, setUserName] = useState<string>("");
   const [UserTitle, setTitle] = useState<string>("");
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
+    getUserInfo().then(setUser);
     if (typeof window !== "undefined") {
       const LocalData = localStorage.getItem("UserInfo");
       if (LocalData) {
@@ -251,7 +254,7 @@ export default function SideBar() {
             </li> */}
               <li>
                 <Link
-                  href={"/aftersale"}
+                  href={"/aftersale/agents"}
                   className="flex items-center gap-2 text-gray-500 p-2 rounded-xl hover:bg-gray-100"
                 >
                   <div className="size-10 flex items-center justify-center rounded-xl bg-gray-100">
@@ -421,8 +424,8 @@ export default function SideBar() {
             </div>
             <p className={`text-xs ${pathname.includes("/chats") && "text-red-500"}`}>مکاتبات</p>
           </Link>
-          <Drawer>
-            <DrawerTrigger className="w-1/4 text-center">
+          <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+            <DrawerTrigger className="w-1/4 text-center" onClick={() => setDrawerOpen(true)}>
               <div className={`size-10 rounded-full flex items-center justify-center mx-auto mb-1`}>
                 <i className="fi fi-sr-apps mt-2.5 text-xl"></i>
               </div>
@@ -440,7 +443,7 @@ export default function SideBar() {
                   </div>
                   <div className="grid grid-cols-4 gap-5">
                     <div className="w-full my-3">
-                      <Link href={"/personnel"} className="text-center space-y-2">
+                      <Link href={"/personnel"} className="text-center space-y-2" onClick={() => setDrawerOpen(false)}>
                         <div
                           className={`size-12 flex items-center text-lg justify-center rounded-2xl bg-red-100 mx-auto`}
                         >
@@ -453,11 +456,28 @@ export default function SideBar() {
                 </div>
                 <div className="p-3">
                   <div className="border-gray-200">
+                    <h2>خدمات پس از فروش</h2>
+                  </div>
+                  <div className="grid grid-cols-4 gap-5">
+                    <div className="w-full my-3">
+                      <Link href={"/aftersale/request"} className="text-center space-y-2" onClick={() => setDrawerOpen(false)}>
+                        <div
+                          className={`size-12 flex items-center text-lg justify-center rounded-2xl bg-red-100 mx-auto`}
+                        >
+                          <i className="fi fi-sr-hand-holding-medical mt-2.5 text-red-500"></i>
+                        </div>
+                        <p className="text-xs">درخواست ها</p>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-3">
+                  <div className="border-gray-200">
                     <h2>تنظیمات</h2>
                   </div>
                   <div className="grid grid-cols-4 gap-5">
                     <div className="w-full my-3">
-                      <Link href={"/settings"} className="text-center space-y-2">
+                      <Link href={"/settings"} className="text-center space-y-2" onClick={() => setDrawerOpen(false)}>
                         <div
                           className={`size-12 flex items-center text-lg justify-center rounded-2xl bg-red-100 mx-auto`}
                         >
@@ -467,7 +487,7 @@ export default function SideBar() {
                       </Link>
                     </div>
                     <div className="w-full my-3">
-                      <Link href={"/settings/departmans"} className="text-center space-y-2">
+                      <Link href={"/settings/departmans"} className="text-center space-y-2" onClick={() => setDrawerOpen(false)}>
                         <div
                           className={`size-12 flex items-center text-lg justify-center rounded-2xl bg-red-100 mx-auto`}
                         >
@@ -477,7 +497,7 @@ export default function SideBar() {
                       </Link>
                     </div>
                     <div className="w-full my-3">
-                      <Link href={"/personnel"} className="text-center space-y-2">
+                      <Link href={`/profile/edit/${user ? user.ID : ""}`} className="text-center space-y-2" onClick={() => setDrawerOpen(false)}>
                         <div
                           className={`size-12 flex items-center text-lg justify-center rounded-2xl bg-red-100 mx-auto`}
                         >
@@ -487,17 +507,15 @@ export default function SideBar() {
                       </Link>
                     </div>
                     <div className="w-full my-3">
-                      <Link href={"/personnel"} className="text-center space-y-2">
+                      {/* <Link href={"/personnel"} className="text-center space-y-2" onClick={() => setDrawerOpen(false)}>
                         <div
                           className={`size-12 flex items-center text-lg justify-center rounded-2xl bg-red-100 mx-auto`}
                         >
                           <i className="fi fi-sr-user-graduate mt-2.5 text-red-500"></i>
                         </div>
                         <p className="text-xs">پشتیبانی</p>
-                      </Link>
-                    </div>
-                    <div className="w-full my-3">
-                      <Link href={"/settings/versions"} className="text-center space-y-2">
+                      </Link> */}
+                      <Link href={"/settings/versions"} className="text-center space-y-2" onClick={() => setDrawerOpen(false)}>
                         <div
                           className={`size-12 flex items-center text-lg justify-center rounded-2xl bg-red-100 mx-auto`}
                         >
@@ -505,6 +523,8 @@ export default function SideBar() {
                         </div>
                         <p className="text-xs">نرم افزار</p>
                       </Link>
+                    </div>
+                    <div className="w-full my-3">
                     </div>
                   </div>
                 </div>

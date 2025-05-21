@@ -5,6 +5,8 @@ type InfoProp = {
     Permissions: string
     ID: string
     Departman: string
+    Fname: string
+    Lname: string
 }
 
 export function useUserInfo() {

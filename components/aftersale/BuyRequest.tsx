@@ -179,7 +179,7 @@ export default function BuyRequest() {
                 </Sheet>
             </div>
             <div className="mt-5">
-                <div className="w-full grid grid-cols-2 gap-5">
+                <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-5">
                     {pendings && (
                         pendings.map((request) => (
                             <Link

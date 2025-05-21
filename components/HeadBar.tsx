@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { getUserInfo } from "@/lib/functions";
 import Image from "next/image";
 import {
   Drawer,
@@ -13,8 +14,23 @@ import {
 // import { requestNotificationPermission, checkNotificationPermission } from "@/src/utils/firebaseConfig";
 
 export default function HeadBar() {
-  const [UserName, setUserName] = useState<string>("");
+  const [user, setUser] = useState<any>(null);
+  const [notif, setNotif] = useState<boolean>(false)
+  const [today, setToday] = useState<string | null>(null)
   const [notificationEnabled, setNotificationEnabled] = useState<boolean>(false);
+
+  const TodayInfo = async () => {
+    await fetch("/api/settings/today")
+      .then((res) => res.json())
+      .then((data) => {
+        setToday(data)
+      })
+  }
+
+  useEffect(() => {
+    TodayInfo()
+    getUserInfo().then(setUser);
+  }, [])
 
   // useEffect(() => {
   //   if (typeof window !== "undefined") {
@@ -50,16 +66,26 @@ export default function HeadBar() {
     <>
       <div className="w-full py-5 bg-white xl:flex items-center border-b hidden">
         <div className="w-1/2">
-          <h2>سلام {UserName}؛ خوش آمدی</h2>
-          <p className="text-xs text-gray-400">شنبه 14 بهمن</p>
+          <h2>سلام {user ? user.Fname : ""}؛ خوش آمدی</h2>
+          <p className="text-xs text-gray-400">{today}</p>
         </div>
         <div className="w-1/2 flex items-center justify-end gap-3">
-          <div className="size-12 rounded-xl flex items-center justify-center bg-gray-100 text-gray-500 relative">
+          <div onClick={() => setNotif(!notif)} className="size-12 rounded-xl flex items-center justify-center bg-gray-100 text-gray-500 relative">
             <i className="fi fi-sr-bell mt-2"></i>
-            <span className="absolute -top-0.5 -right-0.5 flex size-3">
+            {/* <span className="absolute -top-0.5 -right-0.5 flex size-3">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
               <span className="relative inline-flex size-3 rounded-full bg-red-500"></span>
-            </span>
+            </span> */}
+            {notif && (
+              <div className="absolute top-16 shadow-xl left-0 w-[250px] rounded-2xl p-3 bg-white">
+                <div className="mb-1">
+                  <p className="text-xs text-gray-400">اعلان ها</p>
+                </div>
+                <div className="bg-gray-100 text-sm text-gray-400 rounded-xl p-5 text-center">
+                  <h2>شما هیچ اعلانی ندارید.</h2>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -77,11 +103,21 @@ export default function HeadBar() {
             </div>
             <div>
               <p className="text-xs text-white">خوش آمدید</p>
-              <h2 className="font-bold text-white">نیما نیک عمل</h2>
+              <h2 className="font-bold text-white">{user ? user.Fname + " " + user.Lname : ""}</h2>
             </div>
           </div>
-          <div className="bg-white size-14 rounded-2xl flex items-center justify-center text-red-500 text-xl">
+          <div onClick={() => setNotif(!notif)} className="bg-white size-14 rounded-2xl flex items-center justify-center text-red-500 text-xl relative">
             <i className="fi fi-sr-bell mt-2"></i>
+            {notif && (
+              <div className="absolute top-16 shadow-xl left-0 w-[250px] rounded-2xl p-3 bg-white">
+                <div className="mb-1">
+                  <p className="text-xs text-gray-400">اعلان ها</p>
+                </div>
+                <div className="bg-gray-100 text-sm text-gray-400 rounded-xl p-5 text-center">
+                  <h2>شما هیچ اعلانی ندارید.</h2>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
