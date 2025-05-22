@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import ServiceWorkerRegister from "./ServiceWorkerRegister";
 import "./globals.css";
 
 const bakh = localFont({
@@ -42,8 +41,11 @@ export default function RootLayout({
 
   return (
     <html lang="fa" dir="rtl" className="">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#dc2626" />
+      </head>
       <body className={`${bakh.className} antialiased`}>
-        <ServiceWorkerRegister/>
         {children}
       </body>
     </html>
