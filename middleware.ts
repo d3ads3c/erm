@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (loggedUserCookie && pathname === "/login") {
+  if (loggedUserCookie && (pathname === "/login" || pathname === '/')) {
     // Redirect to dashboard if logged in and trying to access login page
     const url = req.nextUrl.clone();
     url.pathname = "/dashboard";
@@ -76,5 +76,5 @@ export async function middleware(req: NextRequest) {
 
 // Apply middleware to all routes except for the excluded paths
 export const config = {
-  matcher: ["/((?!api|img|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|img|_next/static|_next/image|favicon.ico|sw.js|workbox-4754cb34.js|manifest.json).*)"],
 };

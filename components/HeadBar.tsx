@@ -28,9 +28,48 @@ export default function HeadBar() {
   }
 
   useEffect(() => {
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      navigator.serviceWorker.ready.then(async (registration) => {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: 'BG3va9AESVS921QyWIdPFyJVOy6HWSjBzBHTI_5cyK5IJLKRCwkyy4w6n8HLVFV_8iJ18sdN-8n7iEC_ON0NwEs',
+          });
+          // Send subscription to your backend to save it
+          await fetch('/api/notification/save-subscription', {
+            method: 'POST',
+            body: JSON.stringify({ Token: subscription }),
+            headers: { 'Content-Type': 'application/json' },
+          });
+        }
+      });
+    }
     TodayInfo()
     getUserInfo().then(setUser);
   }, [])
+
+  const handleEnableNotifications = async () => {
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: 'BG3va9AESVS921QyWIdPFyJVOy6HWSjBzBHTI_5cyK5IJLKRCwkyy4w6n8HLVFV_8iJ18sdN-8n7iEC_ON0NwEs',
+        });
+        await fetch('/api/notification/save-subscription', {
+          method: 'POST',
+          body: JSON.stringify({ Token: subscription }),
+          headers: { 'Content-Type': 'application/json' },
+        });
+        setNotificationEnabled(true);
+        alert("Notifications enabled!");
+      } else {
+        alert("Permission denied.");
+      }
+    }
+  };
 
   // useEffect(() => {
   //   if (typeof window !== "undefined") {
@@ -70,6 +109,15 @@ export default function HeadBar() {
           <p className="text-xs text-gray-400">{today}</p>
         </div>
         <div className="w-1/2 flex items-center justify-end gap-3">
+          {!notificationEnabled && (
+            <button
+              type="button"
+              className="w-full rounded-xl bg-red-500 text-white py-3"
+              onClick={handleEnableNotifications}
+            >
+              فعال‌سازی اعلان‌ها
+            </button>
+          )}
           <div onClick={() => setNotif(!notif)} className="size-12 rounded-xl flex items-center justify-center bg-gray-100 text-gray-500 relative">
             <i className="fi fi-sr-bell mt-2"></i>
             {/* <span className="absolute -top-0.5 -right-0.5 flex size-3">
