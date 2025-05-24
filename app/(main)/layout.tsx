@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SideBar from "@/components/sidebar";
 import HeadBar from "@/components/HeadBar";
+import Pwa from "@/components/pwa";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function MainLayout({
 }>) {
   return (
     <div className="xl:flex pb-20 xl:pb-0">
+      <Pwa />
       <div className="xl:w-1/6">
         <SideBar />
       </div>

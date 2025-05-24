@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Pwa from "@/components/pwa";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -46,6 +47,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#dc2626" />
       </head>
       <body className={`${bakh.className} antialiased`}>
+        <Pwa />
         {children}
       </body>
     </html>

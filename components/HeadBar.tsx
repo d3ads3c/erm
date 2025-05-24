@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/drawer";
 // import { requestNotificationPermission, checkNotificationPermission } from "@/src/utils/firebaseConfig";
 
+
+
 export default function HeadBar() {
   const [user, setUser] = useState<any>(null);
   const [notif, setNotif] = useState<boolean>(false)
@@ -28,48 +30,32 @@ export default function HeadBar() {
   }
 
   useEffect(() => {
-    if ('serviceWorker' in navigator && 'PushManager' in window) {
-      navigator.serviceWorker.ready.then(async (registration) => {
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-          const subscription = await registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: 'BG3va9AESVS921QyWIdPFyJVOy6HWSjBzBHTI_5cyK5IJLKRCwkyy4w6n8HLVFV_8iJ18sdN-8n7iEC_ON0NwEs',
-          });
-          // Send subscription to your backend to save it
-          await fetch('/api/notification/save-subscription', {
-            method: 'POST',
-            body: JSON.stringify({ Token: subscription }),
-            headers: { 'Content-Type': 'application/json' },
-          });
-        }
-      });
-    }
     TodayInfo()
     getUserInfo().then(setUser);
   }, [])
 
-  const handleEnableNotifications = async () => {
-    if ('serviceWorker' in navigator && 'PushManager' in window) {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') {
-        const registration = await navigator.serviceWorker.ready;
-        const subscription = await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: 'BG3va9AESVS921QyWIdPFyJVOy6HWSjBzBHTI_5cyK5IJLKRCwkyy4w6n8HLVFV_8iJ18sdN-8n7iEC_ON0NwEs',
-        });
-        await fetch('/api/notification/save-subscription', {
-          method: 'POST',
-          body: JSON.stringify({ Token: subscription }),
-          headers: { 'Content-Type': 'application/json' },
-        });
-        setNotificationEnabled(true);
-        alert("Notifications enabled!");
-      } else {
-        alert("Permission denied.");
-      }
-    }
-  };
+  // const handleEnableNotifications = async () => {
+  //   if ('serviceWorker' in navigator) {
+  //     await navigator.serviceWorker.register("/sw.js")
+  //     const permission = await Notification.requestPermission();
+  //     if (permission === 'granted') {
+  //       const registration = await navigator.serviceWorker.ready;
+  //       const subscription = await registration.pushManager.subscribe({
+  //         userVisibleOnly: true,
+  //         applicationServerKey: 'BG3va9AESVS921QyWIdPFyJVOy6HWSjBzBHTI_5cyK5IJLKRCwkyy4w6n8HLVFV_8iJ18sdN-8n7iEC_ON0NwEs',
+  //       });
+  //       await fetch('/api/notification/save-subscription', {
+  //         method: 'POST',
+  //         body: JSON.stringify({ Token: subscription }),
+  //         headers: { 'Content-Type': 'application/json' },
+  //       });
+  //       setNotificationEnabled(true);
+  //       alert("Notifications enabled!");
+  //     } else {
+  //       alert("Permission denied.");
+  //     }
+  //   }
+  // };
 
   // useEffect(() => {
   //   if (typeof window !== "undefined") {
@@ -113,7 +99,6 @@ export default function HeadBar() {
             <button
               type="button"
               className="w-full rounded-xl bg-red-500 text-white py-3"
-              onClick={handleEnableNotifications}
             >
               فعال‌سازی اعلان‌ها
             </button>
