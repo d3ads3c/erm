@@ -23,10 +23,8 @@ function PushNotificationManager() {
     const [message, setMessage] = useState('')
 
     useEffect(() => {
-        if ('serviceWorker' in navigator && 'PushManager' in window) {
             setIsSupported(true)
             registerServiceWorker()
-        }
     }, [])
 
     async function registerServiceWorker() {
