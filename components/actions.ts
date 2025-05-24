@@ -8,31 +8,38 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY!
 )
 
-// Store all subscriptions in an array (for demo; use a DB in production)
-let subscriptions: PushSubscription[] = []
+// Store subscriptions by userId (for demo; use a DB in production)
+let userSubscriptions: Record<string, PushSubscription[]> = {}
 
-export async function subscribeUser(sub: PushSubscription) {
-  // Avoid duplicate subscriptions
-  if (!subscriptions.find(s => JSON.stringify(s) === JSON.stringify(sub))) {
-    subscriptions.push(sub)
+export async function subscribeUser(userId: string, sub: PushSubscription) {
+  if (!userSubscriptions[userId]) {
+    userSubscriptions[userId] = []
+  }
+  // Avoid duplicate subscriptions for the same user
+  if (!userSubscriptions[userId].find(s => JSON.stringify(s) === JSON.stringify(sub))) {
+    userSubscriptions[userId].push(sub)
   }
   return { success: true }
 }
 
-export async function unsubscribeUser(sub?: PushSubscription) {
-  if (sub) {
-    subscriptions = subscriptions.filter(
-      s => JSON.stringify(s) !== JSON.stringify(sub)
-    )
-  } else {
-    subscriptions = []
+export async function unsubscribeUser(userId: string, sub?: PushSubscription) {
+  if (userSubscriptions[userId]) {
+    if (sub) {
+      userSubscriptions[userId] = userSubscriptions[userId].filter(
+        s => JSON.stringify(s) !== JSON.stringify(sub)
+      )
+    } else {
+      userSubscriptions[userId] = []
+    }
   }
   return { success: true }
 }
 
-export async function sendNotification(message: string) {
-  if (subscriptions.length === 0) {
-    throw new Error('No subscriptions available')
+// Send notification to a specific user
+export async function sendNotificationToUser(userId: string, message: string) {
+  const subs = userSubscriptions[userId] || []
+  if (subs.length === 0) {
+    throw new Error('No subscriptions available for this user')
   }
 
   const payload = JSON.stringify({
@@ -41,11 +48,9 @@ export async function sendNotification(message: string) {
     icon: '/img/logo/erm.png',
   })
 
-  // Send notification to all subscribers
   await Promise.all(
-    subscriptions.map(sub =>
+    subs.map(sub =>
       webpush.sendNotification(sub, payload).catch(err => {
-        // Optionally remove invalid subscriptions
         console.error('Push error:', err)
       })
     )

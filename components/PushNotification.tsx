@@ -1,30 +1,27 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { subscribeUser, unsubscribeUser, sendNotification } from './actions'
+import { subscribeUser, unsubscribeUser, sendNotificationToUser } from './actions'
 
 function urlBase64ToUint8Array(base64String: string) {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
     const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/')
-
     const rawData = window.atob(base64)
     const outputArray = new Uint8Array(rawData.length)
-
     for (let i = 0; i < rawData.length; ++i) {
         outputArray[i] = rawData.charCodeAt(i)
     }
     return outputArray
 }
-function PushNotificationManager() {
+
+function PushNotificationManager({ userId }: { userId: string }) {
     const [isSupported, setIsSupported] = useState(false)
-    const [subscription, setSubscription] = useState<PushSubscription | null>(
-        null
-    )
+    const [subscription, setSubscription] = useState<PushSubscription | null>(null)
     const [message, setMessage] = useState('')
 
     useEffect(() => {
-            setIsSupported(true)
-            registerServiceWorker()
+        setIsSupported(true)
+        registerServiceWorker()
     }, [])
 
     async function registerServiceWorker() {
@@ -46,18 +43,18 @@ function PushNotificationManager() {
         })
         setSubscription(sub)
         const serializedSub = JSON.parse(JSON.stringify(sub))
-        await subscribeUser(serializedSub)
+        await subscribeUser(userId, serializedSub)
     }
 
     async function unsubscribeFromPush() {
         await subscription?.unsubscribe()
         setSubscription(null)
-        await unsubscribeUser()
+        await unsubscribeUser(userId, subscription ? JSON.parse(JSON.stringify(subscription)) : undefined)
     }
 
     async function sendTestNotification() {
         if (subscription) {
-            await sendNotification(message)
+            await sendNotificationToUser(userId, message)
             setMessage('')
         }
     }
@@ -90,6 +87,7 @@ function PushNotificationManager() {
         </div>
     )
 }
+
 function InstallPrompt() {
     const [isIOS, setIsIOS] = useState(false)
     const [isStandalone, setIsStandalone] = useState(false)
@@ -98,7 +96,6 @@ function InstallPrompt() {
         setIsIOS(
             /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
         )
-
         setIsStandalone(window.matchMedia('(display-mode: standalone)').matches)
     }, [])
 
@@ -128,11 +125,33 @@ function InstallPrompt() {
     )
 }
 
-export default function PushNotification() {
+export default function PushNotification({ userId }: { userId: string }) {
     return (
         <div>
-            <PushNotificationManager />
+            <PushNotificationManager userId={userId} />
             <InstallPrompt />
+            <button
+                onClick={async () => {
+                    try {
+                        const permission = await Notification.requestPermission();
+                        if (permission !== 'granted') {
+                            alert('Permission not granted');
+                            return;
+                        }
+                        const reg = await navigator.serviceWorker.ready;
+                        const sub = await reg.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!),
+                        });
+                        // Send sub to your backend with userId if needed
+                        alert('Subscribed!');
+                    } catch (e) {
+                        alert('Error: ' + (e as Error).message);
+                    }
+                }}
+            >
+                Enable Notifications
+            </button>
         </div>
     )
 }
